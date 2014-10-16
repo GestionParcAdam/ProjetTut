@@ -6,13 +6,13 @@
 	$manager3 = new departementManager($db);
 	$manager4 = new etudiantManager($db);
 	$manager5 = new fonctionManager($db);
-	$manager6 = new salarieManager($db);
+	
 
 
 	if(isset($_SESSION['pseudo']))
 	{
 	
-		if ((!empty($_POST["Nom"]) && !empty($_POST["Prenom"]) && !empty($_POST["Telephone"])
+		if ((!empty($_POST["Nom"])  && !empty($_POST["Telephone"])
 		&& !empty($_POST["Mail"]) && !empty($_POST["Login"]) && !empty($_POST["Pwd"])) && preg_match("#^[0-9]{10}$#", $_POST["Telephone"])
 		&& preg_match("/^[a-z0-9]+([_\\.-][a-z0-9]+)*@([a-z0-9]+([\.-][a-z0-9]+)*)+\\.[a-z]{2,}$/i", $_POST["Mail"]))
 		{	
@@ -97,7 +97,7 @@
 				if (empty($_POST["annee"]) || empty($_POST["dpt"])) 
 				{ ?>
 		
-					<h1>Ajouter un étudiant</h1>
+					
 					<form method="post" action="#">	
 
 						<label>Année :</label>
