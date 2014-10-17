@@ -231,6 +231,6 @@
 	}
 	else
 	{
-		echo "Vous n'etes pas authentifiez";
+		echo "Vous n'etes pas authentifiez, dommage";
 	}
 ?>
