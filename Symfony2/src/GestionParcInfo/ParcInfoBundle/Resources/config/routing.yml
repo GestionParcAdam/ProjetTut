@@ -1,0 +1,7 @@
+parc_info_homepage:
+    path:     /
+    defaults: { _controller: ParcInfoBundle:Default:index }
+
+parc_info_ajouter:
+    path:     /ajouter
+    defaults: { _controller: ParcInfoBundle:Default:ajouter }
