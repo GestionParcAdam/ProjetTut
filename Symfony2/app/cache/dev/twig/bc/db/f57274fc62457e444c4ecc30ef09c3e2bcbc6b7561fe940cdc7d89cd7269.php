@@ -24,48 +24,58 @@ class __TwigTemplate_bcdbf57274fc62457e444c4ecc30ef09c3e2bcbc6b7561fe940cdc7d89c
         $this->parent->display($context, array_merge($this->blocks, $blocks));
     }
 
-    // line 3
+    // line 11
     public function block_body($context, array $blocks = array())
     {
-        // line 4
-        echo "    ";
+        echo "        
+    <div class=\"row\">
+        <div class=\"col-lg-6\">
+            <h2> Gestion du Parc Informatique</h2>
+            ";
+        // line 18
+        echo "            ";
         if (((isset($context["materiels"]) ? $context["materiels"] : $this->getContext($context, "materiels")) != null)) {
-            // line 5
-            echo "        ";
+            // line 19
+            echo "                ";
+            // line 22
+            echo "                ";
             $context["nbMatHS"] = 0;
-            // line 6
-            echo "        ";
+            // line 23
+            echo "
+                ";
+            // line 24
             $context['_parent'] = (array) $context;
             $context['_seq'] = twig_ensure_traversable((isset($context["materiels"]) ? $context["materiels"] : $this->getContext($context, "materiels")));
             foreach ($context['_seq'] as $context["_key"] => $context["materiel"]) {
-                // line 7
-                echo "            ";
+                // line 25
+                echo "                    ";
                 $context["nbMatHS"] = ((isset($context["nbMatHS"]) ? $context["nbMatHS"] : $this->getContext($context, "nbMatHS")) + 1);
-                // line 8
-                echo "        ";
+                // line 26
+                echo "                ";
             }
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_iterated'], $context['_key'], $context['materiel'], $context['_parent'], $context['loop']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 9
-            echo "        <div class=\"row\">
-            <div class=\"col-lg-6\">
-                <h2> Gestion du Parc Informatique</h2>
-                <div class=\"alert alert-dismissable alert-warning\">
+            // line 27
+            echo "                <div class=\"alert alert-dismissable alert-warning\">
                     <button data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>
                     <h4> Attention! </h4>
                     <p>  ";
-            // line 15
+            // line 30
             echo twig_escape_filter($this->env, (isset($context["nbMatHS"]) ? $context["nbMatHS"] : $this->getContext($context, "nbMatHS")), "html", null, true);
             echo " Matériels sont HS.  </p>
-                    <a href=\"MatHs.html\" ><button class=\"btn btn-defaut col-lg-offset-9\">Accéder à la liste</button></a>      
+                    <a href=\"";
+            // line 31
+            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("parc_info_matHS", array("materiels" => (isset($context["materiels"]) ? $context["materiels"] : $this->getContext($context, "materiels")))), "html", null, true);
+            echo "\" ><button class=\"btn btn-defaut col-lg-offset-9\">Accéder à la liste</button></a>      
                 </div>
-            </div>
-        </div> 
-    ";
+            ";
         }
-        // line 21
-        echo "
+        // line 34
+        echo "        </div>
+    </div> 
+    
+
 <div class=\"row\"> 
     <div class=\"col-lg-6\">
         <div class=\"panel panel-primary\">
@@ -336,6 +346,6 @@ class __TwigTemplate_bcdbf57274fc62457e444c4ecc30ef09c3e2bcbc6b7561fe940cdc7d89c
 
     public function getDebugInfo()
     {
-        return array (  68 => 21,  59 => 15,  51 => 9,  45 => 8,  42 => 7,  37 => 6,  34 => 5,  31 => 4,  28 => 3,);
+        return array (  75 => 34,  69 => 31,  65 => 30,  60 => 27,  54 => 26,  51 => 25,  47 => 24,  44 => 23,  41 => 22,  39 => 19,  36 => 18,  28 => 11,);
     }
 }

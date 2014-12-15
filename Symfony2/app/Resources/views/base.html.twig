@@ -8,17 +8,12 @@
 
     
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap-responsive.css') }}" />
-    <link rel="stylesheet" href="{{ asset('bootstrap/css/font-awesome.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('font-awesome/css/font-awesome.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/local.css') }}" />
-    
-    <!--
-    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/local.css" /> -->
 
     <script type="text/javascript" src="{{ asset('bootstrap/js/jquery-1.10.2.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/script.js') }}"></script>
 
 </head>
 <body>
@@ -34,13 +29,13 @@
                     <span class="icon-bar"></span>
 
                 </button>
-                <a class="navbar-brand" href="index.html"><i class="fa fa-home"></i> Gestion du Parc informatique ADAM SAS</a>
+                <a class="navbar-brand" href="{{ path('parc_info_homepage') }}"><i class="fa fa-home"></i> Gestion du Parc informatique ADAM SAS</a>
             </div>
 
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul id="active" class="nav navbar-nav side-nav">
-                    <li class="selected"><a href="GererMateriel.html"><i class="glyphicon glyphicon-hdd"></i> Gérer le matériel </a></li>
-                    <li><a href="Recherche.html"><i class="glyphicon glyphicon-search"></i>  Recherche multicritère </a></li>
+                    <li class="selected"><a href="{{ path('parc_info_ajouter') }}"><i class="glyphicon glyphicon-hdd"></i> Ajouter un matériel </a></li>
+                    <li><a href="{{ path('parc_info_rechercher') }}"><i class="glyphicon glyphicon-search"></i>  Recherche multicritère </a></li>
                     <li><a href="EditerRapport.html"><i class="glyphicon glyphicon-print"></i> Edition de rapport </a></li>
                 </ul>
 

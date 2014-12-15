@@ -30,6 +30,8 @@ class appDevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
         '_configurator_final' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'Sensio\\Bundle\\DistributionBundle\\Controller\\ConfiguratorController::finalAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/_configurator/final',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
         'parc_info_homepage' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::indexAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
         'parc_info_ajouter' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::ajouterAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/ajouter',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
+        'parc_info_rechercher' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::rechercherAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/search',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
+        'parc_info_matHS' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::matHSAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/matHS',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
     );
 
     /**

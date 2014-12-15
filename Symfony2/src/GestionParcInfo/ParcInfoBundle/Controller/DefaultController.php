@@ -14,6 +14,7 @@ use GestionParcInfo\ParcInfoBundle\Entity\Materiels;
 use GestionParcInfo\ParcInfoBundle\Repository\MaterielsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class DefaultController extends Controller
@@ -57,7 +58,46 @@ class DefaultController extends Controller
     }
     
     public function ajouterAction()
-    {
+    {    
+        /* 
+         * property pour un add entity : je dit quel champ (nom dans le fichier class example.php)
+         * je veux afficher pour le select
+         * 
+         * widget => single_text pour un add date : je dis que le input sera un seul champ
+         * input => datetime pour un add date : je dis le format de l'input
+         * 
+         * currency => false pour un add money : je dis de pas afficher la devise 
+         * (car elle s'affiche en dehors de l'input (nous on placeholder))
+         */
+        
+        $form = $this->createFormBuilder()
+            ->add('typeMat', 'entity', array('class' => 'ParcInfoBundle:Type', 
+                                             'property' => 'libelleType'))
+            ->add('nomMat', 'text')
+            ->add('etatMat', 'entity',array('class' => 'ParcInfoBundle:Etat', 
+                                             'property' => 'libelleEtat'))
+            ->add('statutMat', 'entity', array('class' => 'ParcInfoBundle:Statut', 
+                                             'property' => 'libelleStatut'))
+            ->add('siteGeo', 'entity', array('class' => 'ParcInfoBundle:Site', 
+                                             'property' => 'nomSite'))
+            ->add('dateAchat','date',array('input'  => 'datetime',
+                                           'widget' => 'single_text'))
+            ->add('prixAchat','money',array('currency' => 'false'))
+            ->add('numFacture','text')
+            ->add('modele','text')
+            ->add('fabricant','text')
+            ->add('revendeur','text')
+            ->add('editeur','text')
+            ->add('nomLog','text')
+            ->add('licence','text')
+            ->add('adMac','text')
+            ->add('adIp','text')
+            ->add('adPasserelle','text')
+            ->add('dateGaranti','date',array('input'  => 'datetime',
+                                           'widget' => 'single_text'))    
+            ->add('ajouter', 'submit')
+            ->getForm();
+        
         /* 
         $form = $this->createForm(new testForm());
         
@@ -67,6 +107,8 @@ class DefaultController extends Controller
         /* Ici je créé un matériel
          * Et lui affecte des données grace au getters/setters de l'entité matériel
          */
+        
+        /*
         $materiel = new Materiels();
         $materiel->setMatNom('PC-Zizou');
         $date = new \DateTime();
@@ -79,20 +121,61 @@ class DefaultController extends Controller
         $materiel->setNumSite(1);
         $materiel->setNumType(1);
         $materiel->setNumStatut(1);
-        
+        */
         /*
         *  Ici j'initilise la connexion à la base de donnée en clair (em = entityManager)
         */
         
+        /*
         $em = $this->getDoctrine()->getManager();
+        */
         
         /*
          * Ici je demande de faire persister dans la base l'objet créer
          * Persit + Flush
          */
-        $em->persist($materiel);
-        $em->flush();
         
-        return $this->render('ParcInfoBundle:Default:index.html.twig', array('materiels' => null));
+        /*
+            $em->persist($materiel);
+            $em->flush();
+        */
+            return $this->render('ParcInfoBundle:Default:AjouterMateriel/ajouterMateriel.html.twig', array('form' => $form->createView()));
+    }
+    
+    public function rechercherAction()
+    {
+        $form = $this->createFormBuilder()
+            ->add('typeMat', 'entity', array('class' => 'ParcInfoBundle:Type', 
+                                             'property' => 'libelleType'))
+            ->add('nomMat', 'text')
+            ->add('etatMat', 'entity',array('class' => 'ParcInfoBundle:Etat', 
+                                             'property' => 'libelleEtat'))
+            ->add('statutMat', 'entity', array('class' => 'ParcInfoBundle:Statut', 
+                                             'property' => 'libelleStatut'))
+            ->add('siteGeo', 'entity', array('class' => 'ParcInfoBundle:Site', 
+                                             'property' => 'nomSite'))
+            ->add('dateAchat','date',array('input'  => 'datetime',
+                                           'widget' => 'single_text'))
+            ->add('prixAchat','money',array('currency' => 'false'))
+            ->add('numFacture','text')
+            ->add('modele','text')
+            ->add('fabricant','text')
+            ->add('revendeur','text')
+            ->add('utilisateur','text')     
+            ->getForm();
+        
+        return $this->render('ParcInfoBundle:Default:RechercherMateriel/rechercherMateriel.html.twig', array('form' => $form->createView()));
+    }
+    
+    public function matHSAction()
+    {
+       
+       $em = $this->getDoctrine()->getManager();
+       
+       $materiels = $em->getRepository('ParcInfoBundle:Materiels')   
+                       ->getMaterielsHS();
+       
+        
+       return $this->render('ParcInfoBundle:Default:PopUp/affichePopUp.html.twig',array('materiels' => $materiels));
     }
 }

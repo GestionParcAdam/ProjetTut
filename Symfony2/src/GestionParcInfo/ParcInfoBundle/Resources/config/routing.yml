@@ -5,3 +5,13 @@ parc_info_homepage:
 parc_info_ajouter:
     path:     /ajouter
     defaults: { _controller: ParcInfoBundle:Default:ajouter }
+    
+    
+parc_info_rechercher:
+    path:     /search
+    defaults: { _controller: ParcInfoBundle:Default:rechercher }
+    
+parc_info_matHS:
+    path:     /matHS
+    defaults: { _controller: ParcInfoBundle:Default:matHS }
+

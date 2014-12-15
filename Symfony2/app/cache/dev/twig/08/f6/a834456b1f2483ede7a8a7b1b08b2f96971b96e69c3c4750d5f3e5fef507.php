@@ -33,29 +33,24 @@ class __TwigTemplate_08f6a834456b1f2483ede7a8a7b1b08b2f96971b96e69c3c4750d5f3e5f
         echo "\" />
     <link rel=\"stylesheet\" href=\"";
         // line 11
-        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bootstrap/css/bootstrap-responsive.css"), "html", null, true);
+        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("font-awesome/css/font-awesome.min.css"), "html", null, true);
         echo "\" />
     <link rel=\"stylesheet\" href=\"";
         // line 12
-        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bootstrap/css/font-awesome.min.css"), "html", null, true);
-        echo "\" />
-    <link rel=\"stylesheet\" href=\"";
-        // line 13
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("css/local.css"), "html", null, true);
         echo "\" />
-    
-    <!--
-    <link rel=\"stylesheet\" type=\"text/css\" href=\"bootstrap/css/bootstrap.min.css\" />
-    <link rel=\"stylesheet\" type=\"text/css\" href=\"font-awesome/css/font-awesome.min.css\" />
-    <link rel=\"stylesheet\" type=\"text/css\" href=\"css/local.css\" /> -->
 
     <script type=\"text/javascript\" src=\"";
-        // line 20
+        // line 14
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bootstrap/js/jquery-1.10.2.min.js"), "html", null, true);
         echo "\"></script>
     <script type=\"text/javascript\" src=\"";
-        // line 21
+        // line 15
         echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("bootstrap/js/bootstrap.min.js"), "html", null, true);
+        echo "\"></script>
+    <script type=\"text/javascript\" src=\"";
+        // line 16
+        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl("js/script.js"), "html", null, true);
         echo "\"></script>
 
 </head>
@@ -72,13 +67,22 @@ class __TwigTemplate_08f6a834456b1f2483ede7a8a7b1b08b2f96971b96e69c3c4750d5f3e5f
                     <span class=\"icon-bar\"></span>
 
                 </button>
-                <a class=\"navbar-brand\" href=\"index.html\"><i class=\"fa fa-home\"></i> Gestion du Parc informatique ADAM SAS</a>
+                <a class=\"navbar-brand\" href=\"";
+        // line 32
+        echo $this->env->getExtension('routing')->getPath("parc_info_homepage");
+        echo "\"><i class=\"fa fa-home\"></i> Gestion du Parc informatique ADAM SAS</a>
             </div>
 
             <div class=\"collapse navbar-collapse navbar-ex1-collapse\">
                 <ul id=\"active\" class=\"nav navbar-nav side-nav\">
-                    <li class=\"selected\"><a href=\"GererMateriel.html\"><i class=\"glyphicon glyphicon-hdd\"></i> Gérer le matériel </a></li>
-                    <li><a href=\"Recherche.html\"><i class=\"glyphicon glyphicon-search\"></i>  Recherche multicritère </a></li>
+                    <li class=\"selected\"><a href=\"";
+        // line 37
+        echo $this->env->getExtension('routing')->getPath("parc_info_ajouter");
+        echo "\"><i class=\"glyphicon glyphicon-hdd\"></i> Ajouter un matériel </a></li>
+                    <li><a href=\"";
+        // line 38
+        echo $this->env->getExtension('routing')->getPath("parc_info_rechercher");
+        echo "\"><i class=\"glyphicon glyphicon-search\"></i>  Recherche multicritère </a></li>
                     <li><a href=\"EditerRapport.html\"><i class=\"glyphicon glyphicon-print\"></i> Edition de rapport </a></li>
                 </ul>
 
@@ -94,12 +98,12 @@ class __TwigTemplate_08f6a834456b1f2483ede7a8a7b1b08b2f96971b96e69c3c4750d5f3e5f
         </nav>
         <div id=\"page-wrapper\">
             ";
-        // line 58
+        // line 53
         $this->displayBlock('body', $context, $blocks);
-        // line 59
+        // line 54
         echo "            ";
         $this->displayBlock('javascripts', $context, $blocks);
-        // line 60
+        // line 55
         echo "        </div>
     </div>
     </body>
@@ -107,12 +111,12 @@ class __TwigTemplate_08f6a834456b1f2483ede7a8a7b1b08b2f96971b96e69c3c4750d5f3e5f
 ";
     }
 
-    // line 58
+    // line 53
     public function block_body($context, array $blocks = array())
     {
     }
 
-    // line 59
+    // line 54
     public function block_javascripts($context, array $blocks = array())
     {
     }
@@ -129,6 +133,6 @@ class __TwigTemplate_08f6a834456b1f2483ede7a8a7b1b08b2f96971b96e69c3c4750d5f3e5f
 
     public function getDebugInfo()
     {
-        return array (  116 => 59,  111 => 58,  103 => 60,  100 => 59,  98 => 58,  58 => 21,  54 => 20,  44 => 13,  40 => 12,  36 => 11,  32 => 10,  21 => 1,);
+        return array (  120 => 54,  115 => 53,  107 => 55,  104 => 54,  102 => 53,  84 => 38,  80 => 37,  72 => 32,  53 => 16,  49 => 15,  45 => 14,  40 => 12,  36 => 11,  32 => 10,  21 => 1,);
     }
 }

@@ -1,0 +1,134 @@
+{#
+Ca c'est une vue
+Ici elle étend la vue principal qui est dans app/ressources/views
+Donc on aura déjà un partie de vue créer ensuite on va remplir les bloc de cette vue étendu
+#}
+{% extends "::base.html.twig" %}
+
+{#
+    Ici on dit que le block body de notre vue étendu va prendre tout ce qui suit
+#}
+{% block body %}
+    <br/>
+    <div class="row">     
+        <div class="panel-body">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-laptop"></i> Ajout d'un matériel</h3>
+                </div>
+                <div class="panel-body">
+                    <p class="col-lg-5"><b>Type de matériel :</b>
+                        <br/>
+                        {{ form_widget(form.typeMat, {'attr': {'class': 'form-control'}}) }}
+                    </p>
+                    <p class="col-lg-5"><b>Nom du matériel :</b> 
+                       {{ form_widget(form.nomMat, {'attr': {'class': 'form-control'}}) }}
+                    </p>
+                    <p class="col-lg-5"><b>Etat du matériel :</b> 
+                       {{ form_widget(form.etatMat, {'attr': {'class': 'form-control'}}) }}
+                    </p>
+                    <p class="col-lg-5"><b>Statut du matériel :</b> 
+                       {{ form_widget(form.statutMat, {'attr': {'class': 'form-control'}}) }}
+                    </p>
+                    <p class="col-lg-5"><b>Site géographique :</b> 
+                       {{ form_widget(form.siteGeo, {'attr': {'class': 'form-control'}}) }}
+                    </p>
+                    <div class="systeme_onglets">
+                        <div class="onglets col-sm-12">
+                            <span class="onglet_0 onglet" id="onglet_1" onclick="javascript:change_onglet('1');">Carac. commerciales</span>
+                            <span class="onglet_0 onglet" id="onglet_2" onclick="javascript:change_onglet('2');">Carac. logiciels</span>
+                            <span class="onglet_0 onglet" id="onglet_3" onclick="javascript:change_onglet('3');">Carac. réseau</span>
+                            <span class="onglet_0 onglet" id="onglet_4" onclick="javascript:change_onglet('4');">Utilisateurs affectés</span>
+                            <span class="onglet_0 onglet" id="onglet_5" onclick="javascript:change_onglet('5');">Garanti</span>
+                            <span class="onglet_0 onglet" id="onglet_6" onclick="javascript:change_onglet('6');">Historique des maintenances</span>
+                        </div>
+                        <div class="contenu_onglets">
+                            {# 1er onglet #}
+                            <div class="contenu_onglet" id="contenu_onglet_1">
+                                <p class="col-lg-12"></p>
+                                <p class="col-lg-6"><b>Date d'achat :</b>
+                                    {{ form_widget(form.dateAchat, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                                <p class="col-lg-6"><b>Prix d'achat :</b> 
+                                    {{ form_widget(form.prixAchat, {'attr': 
+                                                                        {'class': 'form-control', 
+                                                                         'placeholder' : 'En €'}}) }}
+                                </p>
+
+                                <p class="col-lg-6"><b>N° facture :</b>
+                                    {{ form_widget(form.numFacture, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                                <p class="col-lg-6"><b>Modèle :</b>
+                                    {{ form_widget(form.modele, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                                <p class="col-lg-6"><b>Fabricant :</b> 
+                                    {{ form_widget(form.fabricant, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                                <p class="col-lg-6"><b>Revendeur :</b> 
+                                    {{ form_widget(form.revendeur, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                            </div>
+                            {# 2eme onglet #}
+                            <div class="contenu_onglet" id="contenu_onglet_2">
+                                <p class="col-lg-12"></p>
+                                <p class="col-lg-12"><b>Editeur  :</b> 
+                                    {{ form_widget(form.editeur, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                                <p class="col-lg-6"><b>Nom du logiciel :</b> 
+                                    {{ form_widget(form.nomLog, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                                <p class="col-lg-6"><b>Licence :</b>
+                                    {{ form_widget(form.licence, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                                <p class="col-lg-12"></p>
+                            </div>
+                            {# 2eme onglet #}
+                            <div class="contenu_onglet" id="contenu_onglet_3">
+                                <p class="col-lg-12"></p>
+                                <p class="col-lg-12"><b>@MAC :</b> 
+                                    {{ form_widget(form.adMac, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                                <p class="col-lg-12"><b>@IP :</b> 
+                                    {{ form_widget(form.adIp, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                                <p class="col-lg-12"><b>@PASSERELLE :</b>
+                                    {{ form_widget(form.adPasserelle, {'attr': {'class': 'form-control'}}) }}
+                                </p>
+                            </div> 
+                            {# 3eme onglet #}
+                            <div class="contenu_onglet" id="contenu_onglet_4">
+                                <p class="col-lg-12">
+                                    <br/> 
+                                    <button class="btn btn-default" id="ajouter_user" ><a href="#">Ajouter un utilisateur</a></button> 
+                                </p>
+                            </div>
+                            {# 4eme onglet #}
+                            <div class="contenu_onglet" id="contenu_onglet_5">
+                                <p class="col-lg-12"></p>
+                                <p class="col-lg-6"><b>Date de fin de garanti :</b> 
+                                    <input class="form-control" type="date" id="date"/>
+                                </p>    
+                            </div>
+                            {# 5eme onglet #}
+                            <div class="contenu_onglet" id="contenu_onglet_6">
+                                <p class="col-lg-12">
+                                    <br/> 
+                                    <button class="btn btn-default" id="ajouter_user" ><a href="#">Ajouter une maintenance</a></button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="col-lg-12">
+                    <p class="col-lg-11">
+                    <p class="col-lg-1">
+                        {{ form_widget(form.ajouter,{'attr': {'class': 'btn btn-primary'}})}}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+                <script type="text/javascript">
+                    var anc_onglet='1';
+                    change_onglet(anc_onglet);
+                </script>
+{% endblock %}
