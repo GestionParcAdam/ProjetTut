@@ -7,6 +7,51 @@ in 2.5 minor versions.
 To get the diff for a specific change, go to https://github.com/symfony/symfony/commit/XXX where XXX is the change hash
 To get the diff between two versions, go to https://github.com/symfony/symfony/compare/v2.5.0...v2.5.1
 
+* 2.5.8 (2014-12-03)
+
+ * bug #12811 Configure firewall's kernel exception listener with configured entry point or a default entry point (rjkip)
+ * bug #12784 [DependencyInjection] make paths relative to __DIR__ in the generated container (nicolas-grekas)
+ * bug #12716 [ClassLoader] define constant only if it wasn't defined before (xabbuh)
+ * bug #12553 [Debug] fix error message on double exception (nicolas-grekas)
+ * bug #12550 [FrameworkBundle] backport #12489 (xabbuh)
+ * bug #12570 Fix initialized() with aliased services (Daniel Wehner)
+ * bug #12267 [Form][WebProfiler] Empty form names fix (kix)
+ * bug #12137 [FrameworkBundle] cache:clear command fills *.php.meta files with wrong data (Strate)
+
+* 2.5.7 (2014-11-20)
+
+ * bug #12525 [Bundle][FrameworkBundle] be smarter when guessing the document root (xabbuh)
+ * bug #12296 [SecurityBundle] Authentication entry point is only registered with firewall exception listener, not with authentication listeners (rjkip)
+ * bug #12489 [FrameworkBundle] Fix server run in case the router script does not exist (romainneutron)
+ * bug #12443 [HttpKernel] Adding support for invokable controllers in the RequestDataCollector (jameshalsall)
+ * bug #12393 [DependencyInjection] inlined factory not referenced (boekkooi)
+ * bug #12436 [Filesystem] Fixed case for empty folder (yosmanyga)
+ * bug #12397 [Routing] fix BC (nicolas-grekas)
+ * bug #12382 [Routing] removed errors from git (HeinZawHtet)
+ * bug #12370 [Yaml] improve error message for multiple documents (xabbuh)
+ * bug #12170 [Form] fix form handling with OPTIONS request method (Tobion)
+ * bug #12235 [Validator] Fixed Regex::getHtmlPattern() to work with complex and negated patterns (webmozart)
+ * bug #12326 [Session] remove invalid hack in session regenerate (Tobion)
+ * bug #12341 [Kernel] ensure session is saved before sending response (Tobion)
+ * bug #12329 [Routing] serialize the compiled route to speed things up (Tobion)
+ * bug #12291 [Form] Fixed usage of "name" variable in form_start block (webmozart)
+ * bug #12316 Break infinite loop while resolving aliases (chx)
+ * bug #12313 [Security][listener] change priority of switchuser (aitboudad)
+
+* 2.5.6 (2014-10-24)
+
+ * bug #11696 [Form] Fix #11694 - Enforce options value type check in some form types (kix)
+ * bug #12225 [SecurityBundle] Add trust_resolver variable into expression (zulus)
+ * bug #12209 [FrameworkBundle] Fixed ide links (hason)
+ * bug #12208 Add missing argument (WouterJ)
+ * bug #12197 [TwigBundle] do not pass a template reference to twig (Tobion)
+ * bug #12196 [TwigBundle] show correct fallback exception template in debug mode (Tobion)
+ * bug #12187 [CssSelector] don't raise warnings when exception is thrown (xabbuh)
+ * bug #12151 [Framework][DX] Set the proper validator class according to the configured api version (peterrehm)
+ * bug #12128 [Console] clean handling of :: passed to find() (xabbuh)
+ * bug #11998 [Intl] Integrated ICU data into Intl component #2 (webmozart)
+ * bug #11920 [Intl] Integrated ICU data into Intl component #1 (webmozart)
+
 * 2.5.5 (2014-09-28)
 
  * bug #12016 [Validator] Added ConstraintValidator::buildViolation() helper for BC with the 2.4 API (webmozart)

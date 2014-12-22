@@ -40,9 +40,9 @@ class __TwigTemplate_c9a312c70b08ed881fc0c23afee47f8ca032bc4e043e3e8ab8363538ef9
         foreach ($context['_seq'] as $context["_key"] => $context["m"]) {
             // line 13
             echo "                <option";
-            echo ((((isset($context["m"]) ? $context["m"] : $this->getContext($context, "m")) == (isset($context["method"]) ? $context["method"] : $this->getContext($context, "method")))) ? (" selected=\"selected\"") : (""));
+            echo ((($context["m"] == (isset($context["method"]) ? $context["method"] : $this->getContext($context, "method")))) ? (" selected=\"selected\"") : (""));
             echo ">";
-            echo twig_escape_filter($this->env, (isset($context["m"]) ? $context["m"] : $this->getContext($context, "m")), "html", null, true);
+            echo twig_escape_filter($this->env, $context["m"], "html", null, true);
             echo "</option>
             ";
         }
@@ -85,9 +85,9 @@ class __TwigTemplate_c9a312c70b08ed881fc0c23afee47f8ca032bc4e043e3e8ab8363538ef9
         foreach ($context['_seq'] as $context["_key"] => $context["l"]) {
             // line 32
             echo "                <option";
-            echo ((((isset($context["l"]) ? $context["l"] : $this->getContext($context, "l")) == (isset($context["limit"]) ? $context["limit"] : $this->getContext($context, "limit")))) ? (" selected=\"selected\"") : (""));
+            echo ((($context["l"] == (isset($context["limit"]) ? $context["limit"] : $this->getContext($context, "limit")))) ? (" selected=\"selected\"") : (""));
             echo ">";
-            echo twig_escape_filter($this->env, (isset($context["l"]) ? $context["l"] : $this->getContext($context, "l")), "html", null, true);
+            echo twig_escape_filter($this->env, $context["l"], "html", null, true);
             echo "</option>
             ";
         }

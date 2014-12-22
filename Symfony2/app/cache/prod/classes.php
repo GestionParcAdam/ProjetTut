@@ -90,7 +90,7 @@ protected $metadataBag;
 public function __construct(array $options = array(), $handler = null, MetadataBag $metaBag = null)
 {
 session_cache_limiter(''); ini_set('session.use_cookies', 1);
-if (version_compare(phpversion(),'5.4.0','>=')) {
+if (PHP_VERSION_ID >= 50400) {
 session_register_shutdown();
 } else {
 register_shutdown_function('session_write_close');
@@ -108,10 +108,10 @@ public function start()
 if ($this->started && !$this->closed) {
 return true;
 }
-if (version_compare(phpversion(),'5.4.0','>=') && \PHP_SESSION_ACTIVE === session_status()) {
+if (PHP_VERSION_ID >= 50400 && \PHP_SESSION_ACTIVE === session_status()) {
 throw new \RuntimeException('Failed to start the session: already started by PHP.');
 }
-if (version_compare(phpversion(),'5.4.0','<') && isset($_SESSION) && session_id()) {
+if (PHP_VERSION_ID < 50400 && isset($_SESSION) && session_id()) {
 throw new \RuntimeException('Failed to start the session: already started by PHP ($_SESSION is set).');
 }
 if (ini_get('session.use_cookies') && headers_sent($file, $line)) {
@@ -152,19 +152,7 @@ ini_set('session.cookie_lifetime', $lifetime);
 if ($destroy) {
 $this->metadataBag->stampNew();
 }
-$ret = session_regenerate_id($destroy);
-if ('files'=== $this->getSaveHandler()->getSaveHandlerName()) {
-session_write_close();
-if (isset($_SESSION)) {
-$backup = $_SESSION;
-session_start();
-$_SESSION = $backup;
-} else {
-session_start();
-}
-$this->loadSession();
-}
-return $ret;
+return session_regenerate_id($destroy);
 }
 public function save()
 {
@@ -235,12 +223,12 @@ throw new \InvalidArgumentException('Must be instance of AbstractProxy or Native
 if (!$saveHandler instanceof AbstractProxy && $saveHandler instanceof \SessionHandlerInterface) {
 $saveHandler = new SessionHandlerProxy($saveHandler);
 } elseif (!$saveHandler instanceof AbstractProxy) {
-$saveHandler = version_compare(phpversion(),'5.4.0','>=') ?
+$saveHandler = PHP_VERSION_ID >= 50400 ?
 new SessionHandlerProxy(new \SessionHandler()) : new NativeProxy();
 }
 $this->saveHandler = $saveHandler;
 if ($this->saveHandler instanceof \SessionHandlerInterface) {
-if (version_compare(phpversion(),'5.4.0','>=')) {
+if (PHP_VERSION_ID >= 50400) {
 session_set_save_handler($this->saveHandler, false);
 } else {
 session_set_save_handler(
@@ -303,7 +291,7 @@ $this->loadSession();
 }
 namespace Symfony\Component\HttpFoundation\Session\Storage\Handler
 {
-if (version_compare(phpversion(),'5.4.0','>=')) {
+if (PHP_VERSION_ID >= 50400) {
 class NativeSessionHandler extends \SessionHandler
 {
 }
@@ -358,14 +346,14 @@ return $this->wrapper;
 }
 public function isActive()
 {
-if (version_compare(phpversion(),'5.4.0','>=')) {
+if (PHP_VERSION_ID >= 50400) {
 return $this->active = \PHP_SESSION_ACTIVE === session_status();
 }
 return $this->active;
 }
 public function setActive($flag)
 {
-if (version_compare(phpversion(),'5.4.0','>=')) {
+if (PHP_VERSION_ID >= 50400) {
 throw new \LogicException('This method is disabled in PHP 5.4.0+');
 }
 $this->active = (bool) $flag;
@@ -1023,14 +1011,14 @@ private $queryString;
 private $parameters = array();
 public function __construct($baseUrl ='', $method ='GET', $host ='localhost', $scheme ='http', $httpPort = 80, $httpsPort = 443, $path ='/', $queryString ='')
 {
-$this->baseUrl = $baseUrl;
-$this->method = strtoupper($method);
-$this->host = $host;
-$this->scheme = strtolower($scheme);
-$this->httpPort = $httpPort;
-$this->httpsPort = $httpsPort;
-$this->pathInfo = $path;
-$this->queryString = $queryString;
+$this->setBaseUrl($baseUrl);
+$this->setMethod($method);
+$this->setHost($host);
+$this->setScheme($scheme);
+$this->setHttpPort($httpPort);
+$this->setHttpsPort($httpsPort);
+$this->setPathInfo($path);
+$this->setQueryString($queryString);
 }
 public function fromRequest(Request $request)
 {
@@ -1041,7 +1029,7 @@ $this->setHost($request->getHost());
 $this->setScheme($request->getScheme());
 $this->setHttpPort($request->isSecure() ? $this->httpPort : $request->getPort());
 $this->setHttpsPort($request->isSecure() ? $request->getPort() : $this->httpsPort);
-$this->setQueryString($request->server->get('QUERY_STRING'));
+$this->setQueryString($request->server->get('QUERY_STRING',''));
 }
 public function getBaseUrl()
 {
@@ -1073,7 +1061,7 @@ return $this->host;
 }
 public function setHost($host)
 {
-$this->host = $host;
+$this->host = strtolower($host);
 }
 public function getScheme()
 {
@@ -1089,7 +1077,7 @@ return $this->httpPort;
 }
 public function setHttpPort($httpPort)
 {
-$this->httpPort = $httpPort;
+$this->httpPort = (int) $httpPort;
 }
 public function getHttpsPort()
 {
@@ -1097,7 +1085,7 @@ return $this->httpsPort;
 }
 public function setHttpsPort($httpsPort)
 {
-$this->httpsPort = $httpsPort;
+$this->httpsPort = (int) $httpsPort;
 }
 public function getQueryString()
 {
@@ -1105,7 +1093,7 @@ return $this->queryString;
 }
 public function setQueryString($queryString)
 {
-$this->queryString = $queryString;
+$this->queryString = (string) $queryString;
 }
 public function getParameters()
 {
@@ -1579,6 +1567,9 @@ $this->paths = (array) $paths;
 }
 public function locate($name, $currentPath = null, $first = true)
 {
+if (''== $name) {
+throw new \InvalidArgumentException('An empty file name is not valid to be located.');
+}
 if ($this->isAbsolutePath($name)) {
 if (!file_exists($name)) {
 throw new \InvalidArgumentException(sprintf('The file "%s" does not exist.', $name));
@@ -1607,8 +1598,8 @@ return array_values(array_unique($filepaths));
 }
 private function isAbsolutePath($file)
 {
-if ($file[0] =='/'|| $file[0] =='\\'|| (strlen($file) > 3 && ctype_alpha($file[0])
-&& $file[1] ==':'&& ($file[2] =='\\'|| $file[2] =='/')
+if ($file[0] ==='/'|| $file[0] ==='\\'|| (strlen($file) > 3 && ctype_alpha($file[0])
+&& $file[1] ===':'&& ($file[2] ==='\\'|| $file[2] ==='/')
 )
 || null !== parse_url($file, PHP_URL_SCHEME)
 ) {
@@ -2304,7 +2295,7 @@ parent::__construct($paths);
 }
 public function locate($file, $currentPath = null, $first = true)
 {
-if ('@'=== $file[0]) {
+if (isset($file[0]) &&'@'=== $file[0]) {
 return $this->kernel->locateResource($file, $this->path, $first);
 }
 return parent::locate($file, $currentPath, $first);
@@ -2323,7 +2314,7 @@ $this->kernel = $kernel;
 }
 public function parse($controller)
 {
-if (3 != count($parts = explode(':', $controller))) {
+if (3 !== count($parts = explode(':', $controller))) {
 throw new \InvalidArgumentException(sprintf('The "%s" controller is not a valid "a:b:c" controller string.', $controller));
 }
 list($bundle, $controller, $action) = $parts;
@@ -2869,7 +2860,7 @@ namespace
 {
 class Twig_Environment
 {
-const VERSION ='1.16.0';
+const VERSION ='1.16.2';
 protected $charset;
 protected $loader;
 protected $debug;
@@ -3648,7 +3639,7 @@ new Twig_SimpleFilter('striptags','strip_tags'),
 new Twig_SimpleFilter('trim','trim'),
 new Twig_SimpleFilter('nl2br','nl2br', array('pre_escape'=>'html','is_safe'=> array('html'))),
 new Twig_SimpleFilter('join','twig_join_filter'),
-new Twig_SimpleFilter('split','twig_split_filter'),
+new Twig_SimpleFilter('split','twig_split_filter', array('needs_environment'=> true)),
 new Twig_SimpleFilter('sort','twig_sort_filter'),
 new Twig_SimpleFilter('merge','twig_array_merge'),
 new Twig_SimpleFilter('batch','twig_array_batch'),
@@ -3715,35 +3706,40 @@ return new Twig_Node_Expression_Unary_Not($this->parseTestExpression($parser, $n
 public function parseTestExpression(Twig_Parser $parser, Twig_NodeInterface $node)
 {
 $stream = $parser->getStream();
-$name = $stream->expect(Twig_Token::NAME_TYPE)->getValue();
-$class = $this->getTestNodeClass($parser, $name, $node->getLine());
+$name = $this->getTestName($parser, $node->getLine());
+$class = $this->getTestNodeClass($parser, $name);
 $arguments = null;
 if ($stream->test(Twig_Token::PUNCTUATION_TYPE,'(')) {
 $arguments = $parser->getExpressionParser()->parseArguments(true);
 }
 return new $class($node, $name, $arguments, $parser->getCurrentToken()->getLine());
 }
-protected function getTestNodeClass(Twig_Parser $parser, $name, $line)
+protected function getTestName(Twig_Parser $parser, $line)
 {
+$stream = $parser->getStream();
+$name = $stream->expect(Twig_Token::NAME_TYPE)->getValue();
 $env = $parser->getEnvironment();
 $testMap = $env->getTests();
-$testName = null;
 if (isset($testMap[$name])) {
-$testName = $name;
-} elseif ($parser->getStream()->test(Twig_Token::NAME_TYPE)) {
+return $name;
+}
+if ($stream->test(Twig_Token::NAME_TYPE)) {
 $name = $name.' '.$parser->getCurrentToken()->getValue();
 if (isset($testMap[$name])) {
 $parser->getStream()->next();
-$testName = $name;
+return $name;
 }
 }
-if (null === $testName) {
 $message = sprintf('The test "%s" does not exist', $name);
-if ($alternatives = $env->computeAlternatives($name, array_keys($env->getTests()))) {
+if ($alternatives = $env->computeAlternatives($name, array_keys($testMap))) {
 $message = sprintf('%s. Did you mean "%s"', $message, implode('", "', $alternatives));
 }
 throw new Twig_Error_Syntax($message, $line, $parser->getFilename());
 }
+protected function getTestNodeClass(Twig_Parser $parser, $name)
+{
+$env = $parser->getEnvironment();
+$testMap = $env->getTests();
 if ($testMap[$name] instanceof Twig_SimpleTest) {
 return $testMap[$name]->getNodeClass();
 }
@@ -3811,25 +3807,25 @@ return twig_date_converter($env, $date, $timezone)->format($format);
 function twig_date_modify_filter(Twig_Environment $env, $date, $modifier)
 {
 $date = twig_date_converter($env, $date, false);
-$date->modify($modifier);
-return $date;
+$resultDate = $date->modify($modifier);
+return null === $resultDate ? $date : $resultDate;
 }
 function twig_date_converter(Twig_Environment $env, $date = null, $timezone = null)
 {
-if (!$timezone) {
-$defaultTimezone = $env->getExtension('core')->getTimezone();
+if (false !== $timezone) {
+if (null === $timezone) {
+$timezone = $env->getExtension('core')->getTimezone();
 } elseif (!$timezone instanceof DateTimeZone) {
-$defaultTimezone = new DateTimeZone($timezone);
-} else {
-$defaultTimezone = $timezone;
+$timezone = new DateTimeZone($timezone);
+}
 }
 if ($date instanceof DateTimeImmutable) {
-return false !== $timezone ? $date->setTimezone($defaultTimezone) : $date;
+return false !== $timezone ? $date->setTimezone($timezone) : $date;
 }
 if ($date instanceof DateTime || $date instanceof DateTimeInterface) {
 $date = clone $date;
 if (false !== $timezone) {
-$date->setTimezone($defaultTimezone);
+$date->setTimezone($timezone);
 }
 return $date;
 }
@@ -3837,9 +3833,9 @@ $asString = (string) $date;
 if (ctype_digit($asString) || (!empty($asString) &&'-'=== $asString[0] && ctype_digit(substr($asString, 1)))) {
 $date ='@'.$date;
 }
-$date = new DateTime($date, $defaultTimezone);
+$date = new DateTime($date, $env->getExtension('core')->getTimezone());
 if (false !== $timezone) {
-$date->setTimezone($defaultTimezone);
+$date->setTimezone($timezone);
 }
 return $date;
 }
@@ -3907,23 +3903,29 @@ $value = (string) $value;
 function twig_array_merge($arr1, $arr2)
 {
 if (!is_array($arr1) || !is_array($arr2)) {
-throw new Twig_Error_Runtime('The merge filter only works with arrays or hashes.');
+throw new Twig_Error_Runtime(sprintf('The merge filter only works with arrays or hashes; %s and %s given.', gettype($arr1), gettype($arr2)));
 }
 return array_merge($arr1, $arr2);
 }
 function twig_slice(Twig_Environment $env, $item, $start, $length = null, $preserveKeys = false)
 {
 if ($item instanceof Traversable) {
-$item = iterator_to_array($item, false);
+if ($item instanceof IteratorAggregate) {
+$item = $item->getIterator();
+}
+if ($start >= 0 && $length >= 0) {
+return iterator_to_array(new LimitIterator($item, $start, $length === null ? -1 : $length), $preserveKeys);
+}
+$item = iterator_to_array($item, $preserveKeys);
 }
 if (is_array($item)) {
 return array_slice($item, $start, $length, $preserveKeys);
 }
 $item = (string) $item;
 if (function_exists('mb_get_info') && null !== $charset = $env->getCharset()) {
-return mb_substr($item, $start, null === $length ? mb_strlen($item, $charset) - $start : $length, $charset);
+return (string) mb_substr($item, $start, null === $length ? mb_strlen($item, $charset) - $start : $length, $charset);
 }
-return null === $length ? substr($item, $start) : substr($item, $start, $length);
+return (string) (null === $length ? substr($item, $start) : substr($item, $start, $length));
 }
 function twig_first(Twig_Environment $env, $item)
 {
@@ -3942,12 +3944,26 @@ $value = iterator_to_array($value, false);
 }
 return implode($glue, (array) $value);
 }
-function twig_split_filter($value, $delimiter, $limit = null)
+function twig_split_filter(Twig_Environment $env, $value, $delimiter, $limit = null)
 {
-if (empty($delimiter)) {
+if (!empty($delimiter)) {
+return null === $limit ? explode($delimiter, $value) : explode($delimiter, $value, $limit);
+}
+if (!function_exists('mb_get_info') || null === $charset = $env->getCharset()) {
 return str_split($value, null === $limit ? 1 : $limit);
 }
-return null === $limit ? explode($delimiter, $value) : explode($delimiter, $value, $limit);
+if ($limit <= 1) {
+return preg_split('/(?<!^)(?!$)/u', $value);
+}
+$length = mb_strlen($value, $charset);
+if ($length < $limit) {
+return array($value);
+}
+$r = array();
+for ($i = 0; $i < $length; $i += $limit) {
+$r[] = mb_substr($value, $i, $limit, $charset);
+}
+return $r;
 }
 function _twig_default_filter($value, $default ='')
 {
@@ -4026,7 +4042,7 @@ switch ($strategy) {
 case'html':
 static $htmlspecialcharsCharsets;
 if (null === $htmlspecialcharsCharsets) {
-if ('hiphop'=== substr(PHP_VERSION, -6)) {
+if (defined('HHVM_VERSION')) {
 $htmlspecialcharsCharsets = array('utf-8'=> true,'UTF-8'=> true);
 } else {
 $htmlspecialcharsCharsets = array('ISO-8859-1'=> true,'ISO8859-1'=> true,'ISO-8859-15'=> true,'ISO8859-15'=> true,'utf-8'=> true,'UTF-8'=> true,'CP866'=> true,'IBM866'=> true,'866'=> true,'CP1251'=> true,'WINDOWS-1251'=> true,'WIN-1251'=> true,'1251'=> true,'CP1252'=> true,'WINDOWS-1252'=> true,'1252'=> true,'KOI8-R'=> true,'KOI8-RU'=> true,'KOI8R'=> true,'BIG5'=> true,'950'=> true,'GB2312'=> true,'936'=> true,'BIG5-HKSCS'=> true,'SHIFT_JIS'=> true,'SJIS'=> true,'932'=> true,'EUC-JP'=> true,'EUCJP'=> true,'ISO8859-5'=> true,'ISO-8859-5'=> true,'MACROMAN'=> true,
@@ -4574,7 +4590,11 @@ $message = sprintf('Key "%s" in object with ArrayAccess of class "%s" does not e
 } elseif (is_object($object)) {
 $message = sprintf('Impossible to access a key "%s" on an object of class "%s" that does not implement ArrayAccess interface', $item, get_class($object));
 } elseif (is_array($object)) {
+if (empty($object)) {
+$message = sprintf('Key "%s" does not exist as the array is empty', $arrayItem);
+} else {
 $message = sprintf('Key "%s" for array with keys "%s" does not exist', $arrayItem, implode(', ', array_keys($object)));
+}
 } elseif (Twig_Template::ARRAY_CALL === $type) {
 $message = sprintf('Impossible to access a key ("%s") on a %s variable ("%s")', $item, gettype($object), $object);
 } else {
@@ -4670,6 +4690,9 @@ protected $dateFormat;
 public function __construct($dateFormat = null)
 {
 $this->dateFormat = $dateFormat ?: static::SIMPLE_DATE;
+if (!function_exists('json_encode')) {
+throw new \RuntimeException('PHP\'s json extension is required to use Monolog\'s NormalizerFormatter');
+}
 }
 public function format(array $record)
 {
@@ -4753,10 +4776,12 @@ class LineFormatter extends NormalizerFormatter
 const SIMPLE_FORMAT ="[%datetime%] %channel%.%level_name%: %message% %context% %extra%\n";
 protected $format;
 protected $allowInlineLineBreaks;
-public function __construct($format = null, $dateFormat = null, $allowInlineLineBreaks = false)
+protected $ignoreEmptyContextAndExtra;
+public function __construct($format = null, $dateFormat = null, $allowInlineLineBreaks = false, $ignoreEmptyContextAndExtra = false)
 {
 $this->format = $format ?: static::SIMPLE_FORMAT;
 $this->allowInlineLineBreaks = $allowInlineLineBreaks;
+$this->ignoreEmptyContextAndExtra = $ignoreEmptyContextAndExtra;
 parent::__construct($dateFormat);
 }
 public function format(array $record)
@@ -4767,6 +4792,16 @@ foreach ($vars['extra'] as $var => $val) {
 if (false !== strpos($output,'%extra.'.$var.'%')) {
 $output = str_replace('%extra.'.$var.'%', $this->replaceNewlines($this->convertToString($val)), $output);
 unset($vars['extra'][$var]);
+}
+}
+if ($this->ignoreEmptyContextAndExtra) {
+if (empty($vars['context'])) {
+unset($vars['context']);
+$output = str_replace('%context%','', $output);
+}
+if (empty($vars['extra'])) {
+unset($vars['extra']);
+$output = str_replace('%extra%','', $output);
 }
 }
 foreach ($vars as $var => $val) {
@@ -4812,7 +4847,7 @@ protected function replaceNewlines($str)
 if ($this->allowInlineLineBreaks) {
 return $str;
 }
-return preg_replace('{[\r\n]+}',' ', $str);
+return strtr($str, array("\r\n"=>' ',"\r"=>' ',"\n"=>' '));
 }
 }
 }
@@ -4843,7 +4878,7 @@ protected $formatter;
 protected $processors = array();
 public function __construct($level = Logger::DEBUG, $bubble = true)
 {
-$this->level = $level;
+$this->setLevel($level);
 $this->bubble = $bubble;
 }
 public function isHandling(array $record)
@@ -4888,7 +4923,7 @@ return $this->formatter;
 }
 public function setLevel($level)
 {
-$this->level = $level;
+$this->level = Logger::toMonologLevel($level);
 return $this;
 }
 public function getLevel()
@@ -4952,15 +4987,19 @@ protected $stream;
 protected $url;
 private $errorMessage;
 protected $filePermission;
-public function __construct($stream, $level = Logger::DEBUG, $bubble = true, $filePermission = null)
+protected $useLocking;
+public function __construct($stream, $level = Logger::DEBUG, $bubble = true, $filePermission = null, $useLocking = false)
 {
 parent::__construct($level, $bubble);
 if (is_resource($stream)) {
 $this->stream = $stream;
-} else {
+} elseif (is_string($stream)) {
 $this->url = $stream;
+} else {
+throw new \InvalidArgumentException('A stream must either be a resource or a string.');
 }
 $this->filePermission = $filePermission;
+$this->useLocking = $useLocking;
 }
 public function close()
 {
@@ -4987,7 +5026,13 @@ $this->stream = null;
 throw new \UnexpectedValueException(sprintf('The stream or file "%s" could not be opened: '.$this->errorMessage, $this->url));
 }
 }
+if ($this->useLocking) {
+flock($this->stream, LOCK_EX);
+}
 fwrite($this->stream, (string) $record['formatted']);
+if ($this->useLocking) {
+flock($this->stream, LOCK_UN);
+}
 }
 private function customErrorHandler($code, $msg)
 {
@@ -5009,7 +5054,7 @@ protected $bufferSize;
 protected $buffer = array();
 protected $stopBuffering;
 protected $passthruLevel;
-public function __construct($handler, $activationStrategy = null, $bufferSize = 0, $bubble = true, $stopBuffering = true, $passthruLevel = NULL)
+public function __construct($handler, $activationStrategy = null, $bufferSize = 0, $bubble = true, $stopBuffering = true, $passthruLevel = null)
 {
 if (null === $activationStrategy) {
 $activationStrategy = new ErrorLevelActivationStrategy(Logger::WARNING);
@@ -5063,7 +5108,7 @@ return false === $this->bubble;
 }
 public function close()
 {
-if (NULL !== $this->passthruLevel) {
+if (null !== $this->passthruLevel) {
 $level = $this->passthruLevel;
 $this->buffer = array_filter($this->buffer, function ($record) use ($level) {
 return $record['level'] >= $level;
@@ -5077,6 +5122,11 @@ $this->buffer = array();
 public function reset()
 {
 $this->buffering = true;
+}
+public function clear()
+{
+$this->buffer = array();
+$this->reset();
 }
 }
 }
@@ -5101,11 +5151,13 @@ return array_flip($this->acceptedLevels);
 public function setAcceptedLevels($minLevelOrList = Logger::DEBUG, $maxLevel = Logger::EMERGENCY)
 {
 if (is_array($minLevelOrList)) {
-$acceptedLevels = $minLevelOrList;
+$acceptedLevels = array_map('Monolog\Logger::toMonologLevel', $minLevelOrList);
 } else {
-$acceptedLevels = array_filter(Logger::getLevels(), function ($level) use ($minLevelOrList, $maxLevel) {
+$minLevelOrList = Logger::toMonologLevel($minLevelOrList);
+$maxLevel = Logger::toMonologLevel($maxLevel);
+$acceptedLevels = array_values(array_filter(Logger::getLevels(), function ($level) use ($minLevelOrList, $maxLevel) {
 return $level >= $minLevelOrList && $level <= $maxLevel;
-});
+}));
 }
 $this->acceptedLevels = array_flip($acceptedLevels);
 }
@@ -5406,6 +5458,13 @@ throw new InvalidArgumentException('Level "'.$level.'" is not defined, use one o
 }
 return static::$levels[$level];
 }
+public static function toMonologLevel($level)
+{
+if (is_string($level) && defined(__CLASS__.'::'.strtoupper($level))) {
+return constant(__CLASS__.'::'.strtoupper($level));
+}
+return $level;
+}
 public function isHandling($level)
 {
 $record = array('level'=> $level,
@@ -5578,12 +5637,13 @@ public function isHandlerActivated(array $record);
 }
 namespace Monolog\Handler\FingersCrossed
 {
+use Monolog\Logger;
 class ErrorLevelActivationStrategy implements ActivationStrategyInterface
 {
 private $actionLevel;
 public function __construct($actionLevel)
 {
-$this->actionLevel = $actionLevel;
+$this->actionLevel = Logger::toMonologLevel($actionLevel);
 }
 public function isHandlerActivated(array $record)
 {
@@ -5631,6 +5691,7 @@ use Assetic\Asset\GlobAsset;
 use Assetic\Asset\HttpAsset;
 use Assetic\AssetManager;
 use Assetic\Factory\Worker\WorkerInterface;
+use Assetic\Filter\DependencyExtractorInterface;
 use Assetic\FilterManager;
 class AssetFactory
 {
@@ -5750,6 +5811,33 @@ unset($options[$key]);
 ksort($options);
 return substr(sha1(serialize($inputs).serialize($filters).serialize($options)), 0, 7);
 }
+public function getLastModified(AssetInterface $asset)
+{
+$mtime = 0;
+foreach ($asset instanceof AssetCollectionInterface ? $asset : array($asset) as $leaf) {
+$mtime = max($mtime, $leaf->getLastModified());
+if (!$filters = $leaf->getFilters()) {
+continue;
+}
+$prevFilters = array();
+foreach ($filters as $filter) {
+$prevFilters[] = $filter;
+if (!$filter instanceof DependencyExtractorInterface) {
+continue;
+}
+$clone = clone $leaf;
+$clone->clearFilters();
+foreach (array_slice($prevFilters, 0, -1) as $prevFilter) {
+$clone->ensureFilter($prevFilter);
+}
+$clone->load();
+foreach ($filter->getChildren($this, $clone->getContent(), $clone->getSourceDirectory()) as $child) {
+$mtime = max($mtime, $this->getLastModified($child));
+}
+}
+}
+return $mtime;
+}
 protected function parseInput($input, array $options = array())
 {
 if ('@'== $input[0]) {
@@ -5808,14 +5896,14 @@ private function applyWorkers(AssetCollectionInterface $asset)
 {
 foreach ($asset as $leaf) {
 foreach ($this->workers as $worker) {
-$retval = $worker->process($leaf);
+$retval = $worker->process($leaf, $this);
 if ($retval instanceof AssetInterface && $leaf !== $retval) {
 $asset->replaceLeaf($leaf, $retval);
 }
 }
 }
 foreach ($this->workers as $worker) {
-$retval = $worker->process($asset);
+$retval = $worker->process($asset, $this);
 if ($retval instanceof AssetInterface) {
 $asset = $retval;
 }
@@ -5885,6 +5973,643 @@ if (!$this->getFilterManager()) {
 $this->setFilterManager($this->container->get('assetic.filter_manager'));
 }
 return parent::getFilter($name);
+}
+}
+}
+namespace Doctrine\Common\Lexer
+{
+abstract class AbstractLexer
+{
+private $tokens = array();
+private $position = 0;
+private $peek = 0;
+public $lookahead;
+public $token;
+public function setInput($input)
+{
+$this->tokens = array();
+$this->reset();
+$this->scan($input);
+}
+public function reset()
+{
+$this->lookahead = null;
+$this->token = null;
+$this->peek = 0;
+$this->position = 0;
+}
+public function resetPeek()
+{
+$this->peek = 0;
+}
+public function resetPosition($position = 0)
+{
+$this->position = $position;
+}
+public function isNextToken($token)
+{
+return null !== $this->lookahead && $this->lookahead['type'] === $token;
+}
+public function isNextTokenAny(array $tokens)
+{
+return null !== $this->lookahead && in_array($this->lookahead['type'], $tokens, true);
+}
+public function moveNext()
+{
+$this->peek = 0;
+$this->token = $this->lookahead;
+$this->lookahead = (isset($this->tokens[$this->position]))
+? $this->tokens[$this->position++] : null;
+return $this->lookahead !== null;
+}
+public function skipUntil($type)
+{
+while ($this->lookahead !== null && $this->lookahead['type'] !== $type) {
+$this->moveNext();
+}
+}
+public function isA($value, $token)
+{
+return $this->getType($value) === $token;
+}
+public function peek()
+{
+if (isset($this->tokens[$this->position + $this->peek])) {
+return $this->tokens[$this->position + $this->peek++];
+} else {
+return null;
+}
+}
+public function glimpse()
+{
+$peek = $this->peek();
+$this->peek = 0;
+return $peek;
+}
+protected function scan($input)
+{
+static $regex;
+if ( ! isset($regex)) {
+$regex ='/('. implode(')|(', $this->getCatchablePatterns()) .')|'. implode('|', $this->getNonCatchablePatterns()) .'/i';
+}
+$flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE;
+$matches = preg_split($regex, $input, -1, $flags);
+foreach ($matches as $match) {
+$type = $this->getType($match[0]);
+$this->tokens[] = array('value'=> $match[0],'type'=> $type,'position'=> $match[1],
+);
+}
+}
+public function getLiteral($token)
+{
+$className = get_class($this);
+$reflClass = new \ReflectionClass($className);
+$constants = $reflClass->getConstants();
+foreach ($constants as $name => $value) {
+if ($value === $token) {
+return $className .'::'. $name;
+}
+}
+return $token;
+}
+abstract protected function getCatchablePatterns();
+abstract protected function getNonCatchablePatterns();
+abstract protected function getType(&$value);
+}
+}
+namespace Doctrine\Common\Annotations
+{
+use Doctrine\Common\Lexer\AbstractLexer;
+final class DocLexer extends AbstractLexer
+{
+const T_NONE = 1;
+const T_INTEGER = 2;
+const T_STRING = 3;
+const T_FLOAT = 4;
+const T_IDENTIFIER = 100;
+const T_AT = 101;
+const T_CLOSE_CURLY_BRACES = 102;
+const T_CLOSE_PARENTHESIS = 103;
+const T_COMMA = 104;
+const T_EQUALS = 105;
+const T_FALSE = 106;
+const T_NAMESPACE_SEPARATOR = 107;
+const T_OPEN_CURLY_BRACES = 108;
+const T_OPEN_PARENTHESIS = 109;
+const T_TRUE = 110;
+const T_NULL = 111;
+const T_COLON = 112;
+protected $noCase = array('@'=> self::T_AT,','=> self::T_COMMA,'('=> self::T_OPEN_PARENTHESIS,')'=> self::T_CLOSE_PARENTHESIS,'{'=> self::T_OPEN_CURLY_BRACES,'}'=> self::T_CLOSE_CURLY_BRACES,'='=> self::T_EQUALS,':'=> self::T_COLON,'\\'=> self::T_NAMESPACE_SEPARATOR
+);
+protected $withCase = array('true'=> self::T_TRUE,'false'=> self::T_FALSE,'null'=> self::T_NULL
+);
+protected function getCatchablePatterns()
+{
+return array('[a-z_\\\][a-z0-9_\:\\\]*[a-z_][a-z0-9_]*','(?:[+-]?[0-9]+(?:[\.][0-9]+)*)(?:[eE][+-]?[0-9]+)?','"(?:[^"]|"")*"',
+);
+}
+protected function getNonCatchablePatterns()
+{
+return array('\s+','\*+','(.)');
+}
+protected function getType(&$value)
+{
+$type = self::T_NONE;
+if ($value[0] ==='"') {
+$value = str_replace('""','"', substr($value, 1, strlen($value) - 2));
+return self::T_STRING;
+}
+if (isset($this->noCase[$value])) {
+return $this->noCase[$value];
+}
+if ($value[0] ==='_'|| $value[0] ==='\\'|| ctype_alpha($value[0])) {
+return self::T_IDENTIFIER;
+}
+$lowerValue = strtolower($value);
+if (isset($this->withCase[$lowerValue])) {
+return $this->withCase[$lowerValue];
+}
+if (is_numeric($value)) {
+return (strpos($value,'.') !== false || stripos($value,'e') !== false)
+? self::T_FLOAT : self::T_INTEGER;
+}
+return $type;
+}
+}
+}
+namespace Doctrine\Common\Annotations
+{
+interface Reader
+{
+function getClassAnnotations(\ReflectionClass $class);
+function getClassAnnotation(\ReflectionClass $class, $annotationName);
+function getMethodAnnotations(\ReflectionMethod $method);
+function getMethodAnnotation(\ReflectionMethod $method, $annotationName);
+function getPropertyAnnotations(\ReflectionProperty $property);
+function getPropertyAnnotation(\ReflectionProperty $property, $annotationName);
+}
+}
+namespace Doctrine\Common\Annotations
+{
+class FileCacheReader implements Reader
+{
+private $reader;
+private $dir;
+private $debug;
+private $loadedAnnotations = array();
+private $classNameHashes = array();
+public function __construct(Reader $reader, $cacheDir, $debug = false)
+{
+$this->reader = $reader;
+if (!is_dir($cacheDir) && !@mkdir($cacheDir, 0777, true)) {
+throw new \InvalidArgumentException(sprintf('The directory "%s" does not exist and could not be created.', $cacheDir));
+}
+$this->dir = rtrim($cacheDir,'\\/');
+$this->debug = $debug;
+}
+public function getClassAnnotations(\ReflectionClass $class)
+{
+if ( ! isset($this->classNameHashes[$class->name])) {
+$this->classNameHashes[$class->name] = sha1($class->name);
+}
+$key = $this->classNameHashes[$class->name];
+if (isset($this->loadedAnnotations[$key])) {
+return $this->loadedAnnotations[$key];
+}
+$path = $this->dir.'/'.strtr($key,'\\','-').'.cache.php';
+if (!is_file($path)) {
+$annot = $this->reader->getClassAnnotations($class);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+if ($this->debug
+&& (false !== $filename = $class->getFilename())
+&& filemtime($path) < filemtime($filename)) {
+@unlink($path);
+$annot = $this->reader->getClassAnnotations($class);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+return $this->loadedAnnotations[$key] = include $path;
+}
+public function getPropertyAnnotations(\ReflectionProperty $property)
+{
+$class = $property->getDeclaringClass();
+if ( ! isset($this->classNameHashes[$class->name])) {
+$this->classNameHashes[$class->name] = sha1($class->name);
+}
+$key = $this->classNameHashes[$class->name].'$'.$property->getName();
+if (isset($this->loadedAnnotations[$key])) {
+return $this->loadedAnnotations[$key];
+}
+$path = $this->dir.'/'.strtr($key,'\\','-').'.cache.php';
+if (!is_file($path)) {
+$annot = $this->reader->getPropertyAnnotations($property);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+if ($this->debug
+&& (false !== $filename = $class->getFilename())
+&& filemtime($path) < filemtime($filename)) {
+@unlink($path);
+$annot = $this->reader->getPropertyAnnotations($property);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+return $this->loadedAnnotations[$key] = include $path;
+}
+public function getMethodAnnotations(\ReflectionMethod $method)
+{
+$class = $method->getDeclaringClass();
+if ( ! isset($this->classNameHashes[$class->name])) {
+$this->classNameHashes[$class->name] = sha1($class->name);
+}
+$key = $this->classNameHashes[$class->name].'#'.$method->getName();
+if (isset($this->loadedAnnotations[$key])) {
+return $this->loadedAnnotations[$key];
+}
+$path = $this->dir.'/'.strtr($key,'\\','-').'.cache.php';
+if (!is_file($path)) {
+$annot = $this->reader->getMethodAnnotations($method);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+if ($this->debug
+&& (false !== $filename = $class->getFilename())
+&& filemtime($path) < filemtime($filename)) {
+@unlink($path);
+$annot = $this->reader->getMethodAnnotations($method);
+$this->saveCacheFile($path, $annot);
+return $this->loadedAnnotations[$key] = $annot;
+}
+return $this->loadedAnnotations[$key] = include $path;
+}
+private function saveCacheFile($path, $data)
+{
+if (!is_writable($this->dir)) {
+throw new \InvalidArgumentException(sprintf('The directory "%s" is not writable. Both, the webserver and the console user need access. You can manage access rights for multiple users with "chmod +a". If your system does not support this, check out the acl package.', $this->dir));
+}
+file_put_contents($path,'<?php return unserialize('.var_export(serialize($data), true).');');
+}
+public function getClassAnnotation(\ReflectionClass $class, $annotationName)
+{
+$annotations = $this->getClassAnnotations($class);
+foreach ($annotations as $annotation) {
+if ($annotation instanceof $annotationName) {
+return $annotation;
+}
+}
+return null;
+}
+public function getMethodAnnotation(\ReflectionMethod $method, $annotationName)
+{
+$annotations = $this->getMethodAnnotations($method);
+foreach ($annotations as $annotation) {
+if ($annotation instanceof $annotationName) {
+return $annotation;
+}
+}
+return null;
+}
+public function getPropertyAnnotation(\ReflectionProperty $property, $annotationName)
+{
+$annotations = $this->getPropertyAnnotations($property);
+foreach ($annotations as $annotation) {
+if ($annotation instanceof $annotationName) {
+return $annotation;
+}
+}
+return null;
+}
+public function clearLoadedAnnotations()
+{
+$this->loadedAnnotations = array();
+}
+}
+}
+namespace Doctrine\Common\Annotations
+{
+use SplFileObject;
+final class PhpParser
+{
+public function parseClass(\ReflectionClass $class)
+{
+if (method_exists($class,'getUseStatements')) {
+return $class->getUseStatements();
+}
+if (false === $filename = $class->getFilename()) {
+return array();
+}
+$content = $this->getFileContent($filename, $class->getStartLine());
+if (null === $content) {
+return array();
+}
+$namespace = preg_quote($class->getNamespaceName());
+$content = preg_replace('/^.*?(\bnamespace\s+'. $namespace .'\s*[;{].*)$/s','\\1', $content);
+$tokenizer = new TokenParser('<?php '. $content);
+$statements = $tokenizer->parseUseStatements($class->getNamespaceName());
+return $statements;
+}
+private function getFileContent($filename, $lineNumber)
+{
+if ( ! is_file($filename)) {
+return null;
+}
+$content ='';
+$lineCnt = 0;
+$file = new SplFileObject($filename);
+while (!$file->eof()) {
+if ($lineCnt++ == $lineNumber) {
+break;
+}
+$content .= $file->fgets();
+}
+return $content;
+}
+}
+}
+namespace Doctrine\Common
+{
+use Doctrine\Common\Lexer\AbstractLexer;
+abstract class Lexer extends AbstractLexer
+{
+}
+}
+namespace Doctrine\Common\Persistence
+{
+interface ConnectionRegistry
+{
+public function getDefaultConnectionName();
+public function getConnection($name = null);
+public function getConnections();
+public function getConnectionNames();
+}
+}
+namespace Doctrine\Common\Persistence
+{
+interface Proxy
+{
+const MARKER ='__CG__';
+const MARKER_LENGTH = 6;
+public function __load();
+public function __isInitialized();
+}
+}
+namespace Doctrine\Common\Util
+{
+use Doctrine\Common\Persistence\Proxy;
+class ClassUtils
+{
+public static function getRealClass($class)
+{
+if (false === $pos = strrpos($class,'\\'.Proxy::MARKER.'\\')) {
+return $class;
+}
+return substr($class, $pos + Proxy::MARKER_LENGTH + 2);
+}
+public static function getClass($object)
+{
+return self::getRealClass(get_class($object));
+}
+public static function getParentClass($className)
+{
+return get_parent_class( self::getRealClass( $className ) );
+}
+public static function newReflectionClass($class)
+{
+return new \ReflectionClass( self::getRealClass( $class ) );
+}
+public static function newReflectionObject($object)
+{
+return self::newReflectionClass( self::getClass( $object ) );
+}
+public static function generateProxyClassName($className, $proxyNamespace)
+{
+return rtrim($proxyNamespace,'\\') .'\\'.Proxy::MARKER.'\\'. ltrim($className,'\\');
+}
+}
+}
+namespace Doctrine\Common\Persistence
+{
+interface ManagerRegistry extends ConnectionRegistry
+{
+public function getDefaultManagerName();
+public function getManager($name = null);
+public function getManagers();
+public function resetManager($name = null);
+public function getAliasNamespace($alias);
+public function getManagerNames();
+public function getRepository($persistentObject, $persistentManagerName = null);
+public function getManagerForClass($class);
+}
+}
+namespace Symfony\Bridge\Doctrine
+{
+use Doctrine\Common\Persistence\ManagerRegistry as ManagerRegistryInterface;
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
+interface RegistryInterface extends ManagerRegistryInterface
+{
+public function getDefaultEntityManagerName();
+public function getEntityManager($name = null);
+public function getEntityManagers();
+public function resetEntityManager($name = null);
+public function getEntityNamespace($alias);
+public function getEntityManagerNames();
+public function getEntityManagerForClass($class);
+}
+}
+namespace Doctrine\Common\Persistence
+{
+use Doctrine\Common\Persistence\ManagerRegistry;
+abstract class AbstractManagerRegistry implements ManagerRegistry
+{
+private $name;
+private $connections;
+private $managers;
+private $defaultConnection;
+private $defaultManager;
+private $proxyInterfaceName;
+public function __construct($name, array $connections, array $managers, $defaultConnection, $defaultManager, $proxyInterfaceName)
+{
+$this->name = $name;
+$this->connections = $connections;
+$this->managers = $managers;
+$this->defaultConnection = $defaultConnection;
+$this->defaultManager = $defaultManager;
+$this->proxyInterfaceName = $proxyInterfaceName;
+}
+abstract protected function getService($name);
+abstract protected function resetService($name);
+public function getName()
+{
+return $this->name;
+}
+public function getConnection($name = null)
+{
+if (null === $name) {
+$name = $this->defaultConnection;
+}
+if (!isset($this->connections[$name])) {
+throw new \InvalidArgumentException(sprintf('Doctrine %s Connection named "%s" does not exist.', $this->name, $name));
+}
+return $this->getService($this->connections[$name]);
+}
+public function getConnectionNames()
+{
+return $this->connections;
+}
+public function getConnections()
+{
+$connections = array();
+foreach ($this->connections as $name => $id) {
+$connections[$name] = $this->getService($id);
+}
+return $connections;
+}
+public function getDefaultConnectionName()
+{
+return $this->defaultConnection;
+}
+public function getDefaultManagerName()
+{
+return $this->defaultManager;
+}
+public function getManager($name = null)
+{
+if (null === $name) {
+$name = $this->defaultManager;
+}
+if (!isset($this->managers[$name])) {
+throw new \InvalidArgumentException(sprintf('Doctrine %s Manager named "%s" does not exist.', $this->name, $name));
+}
+return $this->getService($this->managers[$name]);
+}
+public function getManagerForClass($class)
+{
+if (strpos($class,':') !== false) {
+list($namespaceAlias, $simpleClassName) = explode(':', $class);
+$class = $this->getAliasNamespace($namespaceAlias) .'\\'. $simpleClassName;
+}
+$proxyClass = new \ReflectionClass($class);
+if ($proxyClass->implementsInterface($this->proxyInterfaceName)) {
+$class = $proxyClass->getParentClass()->getName();
+}
+foreach ($this->managers as $id) {
+$manager = $this->getService($id);
+if (!$manager->getMetadataFactory()->isTransient($class)) {
+return $manager;
+}
+}
+}
+public function getManagerNames()
+{
+return $this->managers;
+}
+public function getManagers()
+{
+$dms = array();
+foreach ($this->managers as $name => $id) {
+$dms[$name] = $this->getService($id);
+}
+return $dms;
+}
+public function getRepository($persistentObjectName, $persistentManagerName = null)
+{
+return $this->getManager($persistentManagerName)->getRepository($persistentObjectName);
+}
+public function resetManager($name = null)
+{
+if (null === $name) {
+$name = $this->defaultManager;
+}
+if (!isset($this->managers[$name])) {
+throw new \InvalidArgumentException(sprintf('Doctrine %s Manager named "%s" does not exist.', $this->name, $name));
+}
+$this->resetService($this->managers[$name]);
+}
+}
+}
+namespace Symfony\Bridge\Doctrine
+{
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Common\Persistence\AbstractManagerRegistry;
+abstract class ManagerRegistry extends AbstractManagerRegistry implements ContainerAwareInterface
+{
+protected $container;
+protected function getService($name)
+{
+return $this->container->get($name);
+}
+protected function resetService($name)
+{
+$this->container->set($name, null);
+}
+public function setContainer(ContainerInterface $container = null)
+{
+$this->container = $container;
+}
+}
+}
+namespace Doctrine\Bundle\DoctrineBundle
+{
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\EntityManager;
+class Registry extends ManagerRegistry implements RegistryInterface
+{
+public function __construct(ContainerInterface $container, array $connections, array $entityManagers, $defaultConnection, $defaultEntityManager)
+{
+$this->setContainer($container);
+parent::__construct('ORM', $connections, $entityManagers, $defaultConnection, $defaultEntityManager,'Doctrine\ORM\Proxy\Proxy');
+}
+public function getDefaultEntityManagerName()
+{
+trigger_error('getDefaultEntityManagerName is deprecated since Symfony 2.1. Use getDefaultManagerName instead', E_USER_DEPRECATED);
+return $this->getDefaultManagerName();
+}
+public function getEntityManager($name = null)
+{
+trigger_error('getEntityManager is deprecated since Symfony 2.1. Use getManager instead', E_USER_DEPRECATED);
+return $this->getManager($name);
+}
+public function getEntityManagers()
+{
+trigger_error('getEntityManagers is deprecated since Symfony 2.1. Use getManagers instead', E_USER_DEPRECATED);
+return $this->getManagers();
+}
+public function resetEntityManager($name = null)
+{
+trigger_error('resetEntityManager is deprecated since Symfony 2.1. Use resetManager instead', E_USER_DEPRECATED);
+$this->resetManager($name);
+}
+public function getEntityNamespace($alias)
+{
+trigger_error('getEntityNamespace is deprecated since Symfony 2.1. Use getAliasNamespace instead', E_USER_DEPRECATED);
+return $this->getAliasNamespace($alias);
+}
+public function getAliasNamespace($alias)
+{
+foreach (array_keys($this->getManagers()) as $name) {
+try {
+return $this->getManager($name)->getConfiguration()->getEntityNamespace($alias);
+} catch (ORMException $e) {
+}
+}
+throw ORMException::unknownEntityNamespace($alias);
+}
+public function getEntityManagerNames()
+{
+trigger_error('getEntityManagerNames is deprecated since Symfony 2.1. Use getManagerNames instead', E_USER_DEPRECATED);
+return $this->getManagerNames();
+}
+public function getEntityManagerForClass($class)
+{
+trigger_error('getEntityManagerForClass is deprecated since Symfony 2.1. Use getManagerForClass instead', E_USER_DEPRECATED);
+return $this->getManagerForClass($class);
 }
 }
 }
@@ -5986,6 +6711,8 @@ $configurations[$configuration->getName()] = $configuration;
 }
 if (is_array($controller)) {
 $r = new \ReflectionMethod($controller[0], $controller[1]);
+} elseif (is_object($controller) && is_callable($controller,'__invoke')) {
+$r = new \ReflectionMethod($controller,'__invoke');
 } else {
 $r = new \ReflectionFunction($controller);
 }
@@ -6050,11 +6777,16 @@ $value = $request->attributes->get($param);
 if (!$value && $configuration->isOptional()) {
 return false;
 }
-$date = isset($options['format'])
-? DateTime::createFromFormat($options['format'], $value)
-: new DateTime($value);
+if (isset($options['format'])) {
+$date = DateTime::createFromFormat($options['format'], $value);
 if (!$date) {
 throw new NotFoundHttpException('Invalid date given.');
+}
+} else {
+if (false === strtotime($value)) {
+throw new NotFoundHttpException('Invalid date given.');
+}
+$date = new DateTime($value);
 }
 $request->attributes->set($param, $date);
 return true;
@@ -6422,7 +7154,7 @@ if (!$configuration = $request->attributes->get('_cache')) {
 return;
 }
 $response = $event->getResponse();
-if (!in_array($response->getStatusCode(), array(200, 203, 300, 301, 302, 404, 410))) {
+if (!in_array($response->getStatusCode(), array(200, 203, 300, 301, 302, 304, 404, 410))) {
 return;
 }
 if (null !== $age = $configuration->getSMaxAge()) {

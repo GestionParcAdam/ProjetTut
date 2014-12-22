@@ -9,9 +9,11 @@
  * Les includes comme en Java 
  */
 namespace GestionParcInfo\ParcInfoBundle\Controller;
-use GestionParcInfo\ParcInfoBundle\Form\testForm;
-use GestionParcInfo\ParcInfoBundle\Entity\Materiels;
-use GestionParcInfo\ParcInfoBundle\Repository\MaterielsRepository;
+
+use GestionParcInfo\ParcInfoBundle\Entity\Materiel;
+use GestionParcInfo\ParcInfoBundle\Entity\Site;
+use GestionParcInfo\ParcInfoBundle\Entity\Etat;
+use GestionParcInfo\ParcInfoBundle\Repository\MaterielRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,7 +35,7 @@ class DefaultController extends Controller
          * Donc le get repository va chercher dans le bundle le repository correspondant à l'entité matériel
          * Pour la chercher dans matériel dans les annotations au début on a dit où se trouvait son repository
          */
-        $materiels = $em->getRepository('ParcInfoBundle:Materiels')   
+        $materiels = $em->getRepository('ParcInfoBundle:Materiel')   
                        ->getMaterielsHS();
         
         
@@ -142,6 +144,32 @@ class DefaultController extends Controller
             return $this->render('ParcInfoBundle:Default:AjouterMateriel/ajouterMateriel.html.twig', array('form' => $form->createView()));
     }
     
+    public function fixtureAction()
+    {
+        /*
+        $site = new Site();
+        $site->setNomSite('Limoges');
+        $site->setAdresseSite('47 rue de la soif');
+        
+        $etat = new Etat();
+        $etat->setLibelleEtat('En service');
+        
+        
+        $materiel = new Materiel();
+        $materiel->setNomMat('PC-Fabien');
+        $materiel->setNumSite($site);
+        $materiel->setNumEtat($etat);
+        $date = new \DateTime();
+        $date->setDate(2014, 12, 09);
+        $materiel->setDateGarantie($date);
+        
+        $em = $this->getDoctrine()->getManager();
+        
+        $em->persist($materiel);
+        $em->flush();
+         */
+    }
+    
     public function rechercherAction()
     {
         $form = $this->createFormBuilder()
@@ -172,10 +200,10 @@ class DefaultController extends Controller
        
        $em = $this->getDoctrine()->getManager();
        
-       $materiels = $em->getRepository('ParcInfoBundle:Materiels')   
+       $materiels = $em->getRepository('ParcInfoBundle:Materiel')   
                        ->getMaterielsHS();
-       
         
-       return $this->render('ParcInfoBundle:Default:PopUp/affichePopUp.html.twig',array('materiels' => $materiels));
+       return $this->render('ParcInfoBundle:Default:PopUp/affichePopUp.html.twig',
+               array('materiels' => $materiels));
     }
 }

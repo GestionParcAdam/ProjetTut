@@ -59,11 +59,11 @@ class __TwigTemplate_22625ae3b7183ee04e9f82af99bc40ab35b21e35b678e6ff1728981571a
             echo "'\" class=\"cellule\">
                                             <td>";
             // line 35
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["materiel"]) ? $context["materiel"] : $this->getContext($context, "materiel")), "matNom"), "html", null, true);
+            echo twig_escape_filter($this->env, $this->getAttribute($context["materiel"], "nomMat", array()), "html", null, true);
             echo "</td>
                                             <td>";
             // line 36
-            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["materiel"]) ? $context["materiel"] : $this->getContext($context, "materiel")), "numSite"), "html", null, true);
+            echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute($context["materiel"], "getNumSite", array()), "nomSite", array()), "html", null, true);
             echo "</td>
                                         </tr>
                                     ";

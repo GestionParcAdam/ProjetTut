@@ -32,8 +32,8 @@ Donc on aura déjà un partie de vue créer ensuite on va remplir les bloc de ce
                                 <tbody>
                                     {% for materiel in materiels %}
                                         <tr onclick="document.location.href = '{# {{ path('parc_info_afficherMat') }} #}'" class="cellule">
-                                            <td>{{ materiel.matNom }}</td>
-                                            <td>{{ materiel.numSite }}</td>
+                                            <td>{{ materiel.nomMat }}</td>
+                                            <td>{{ materiel.getNumSite.nomSite }}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>

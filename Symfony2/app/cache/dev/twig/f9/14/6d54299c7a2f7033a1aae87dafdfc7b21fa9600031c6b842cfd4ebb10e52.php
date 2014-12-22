@@ -39,25 +39,25 @@ class __TwigTemplate_f9146d54299c7a2f7033a1aae87dafdfc7b21fa9600031c6b842cfd4ebb
                             <p class=\"col-lg-5\"><b>Site géographique :</b>
                                 ";
         // line 21
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "siteGeo"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "siteGeo", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
                             </p>
                             <p class=\"col-lg-5\"><b>Type de matériel :</b>
                                 ";
         // line 24
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "typeMat"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "typeMat", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo " 
                             </p>                                        
                             <p class=\"col-lg-5\"><b>Etat du matériel :</b>
                                 ";
         // line 27
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "etatMat"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "etatMat", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
                             </p>
                             <p class=\"col-lg-5\"><b>Statut du matériel :</b> 
                                 ";
         // line 30
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "statutMat"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "statutMat", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
                             </p>  
                         </div>
@@ -68,7 +68,7 @@ class __TwigTemplate_f9146d54299c7a2f7033a1aae87dafdfc7b21fa9600031c6b842cfd4ebb
                             <p class=\"col-lg-5\"><b>Utilisateur :</b> 
                                 ";
         // line 38
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "utilisateur"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "utilisateur", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
                             </p>
                         </div>
@@ -77,40 +77,40 @@ class __TwigTemplate_f9146d54299c7a2f7033a1aae87dafdfc7b21fa9600031c6b842cfd4ebb
                             <p class=\"col-lg-6\"><b>Nom du matériel :</b> 
                                 ";
         // line 44
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "nomMat"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "nomMat", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
                             </p>
                             <p class=\"col-lg-6\"><b>Modèle :</b>
                                 ";
         // line 47
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "modele"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "modele", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
                             </p>
                             <p class=\"col-lg-12\"></p>
                             <p class=\"col-lg-6\"><b>Date d'achat :</b>
                                 ";
         // line 51
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "dateAchat"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "dateAchat", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
                             </p>
                             <p class=\"col-lg-6\"><b>Fabricant :</b> 
                                 ";
         // line 54
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "fabricant"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "fabricant", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
                             </p>
                             <div class=\"col-lg-12\"></div>
                             <p class=\"col-lg-6\"><b>Revendeur :</b> 
                                 ";
         // line 58
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "revendeur"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "revendeur", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
                             </p>
                             <div class=\"col-lg-12\"></div>
                             <p class=\"col-lg-6\"><b>N° facture :</b>
                                 ";
         // line 62
-        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "numFacture"), 'widget', array("attr" => array("class" => "form-control")));
+        echo $this->env->getExtension('form')->renderer->searchAndRenderBlock($this->getAttribute((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), "numFacture", array()), 'widget', array("attr" => array("class" => "form-control")));
         echo "
                             </p>
                             <div class=\"col-lg-12\"></div>

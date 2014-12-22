@@ -15,3 +15,7 @@ parc_info_matHS:
     path:     /matHS
     defaults: { _controller: ParcInfoBundle:Default:matHS }
 
+parc_info_ficture:
+    path:     /fixture
+    defaults: { _controller: ParcInfoBundle:Default:fixture }
+

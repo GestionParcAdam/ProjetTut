@@ -21,7 +21,6 @@ namespace Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-
 /**
  * This factory is used to create default repository objects for entities at runtime.
  *
