@@ -65,6 +65,12 @@ class Materiel
      */
     private $numCarac;
     
+    /**
+     * @ORM\ManyToOne(targetEntity="GestionParcInfo\ParcInfoBundle\Entity\Type", cascade={"persist","remove"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $numType;
+    
     
     /**
      * Get id
@@ -235,5 +241,28 @@ class Materiel
     public function getNumCarac()
     {
         return $this->numCarac;
+    }
+
+    /**
+     * Set numType
+     *
+     * @param \GestionParcInfo\ParcInfoBundle\Entity\Type $numType
+     * @return Materiel
+     */
+    public function setNumType(\GestionParcInfo\ParcInfoBundle\Entity\Type $numType = null)
+    {
+        $this->numType = $numType;
+
+        return $this;
+    }
+
+    /**
+     * Get numType
+     *
+     * @return \GestionParcInfo\ParcInfoBundle\Entity\Type 
+     */
+    public function getNumType()
+    {
+        return $this->numType;
     }
 }

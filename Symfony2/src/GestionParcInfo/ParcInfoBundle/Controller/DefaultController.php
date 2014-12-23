@@ -59,7 +59,7 @@ class DefaultController extends Controller
         }
     }
     
-    public function ajouterAction()
+    public function ajouterAction(Request $request)
     {    
         /* 
          * property pour un add entity : je dit quel champ (nom dans le fichier class example.php)
@@ -95,10 +95,34 @@ class DefaultController extends Controller
             ->add('adMac','text')
             ->add('adIp','text')
             ->add('adPasserelle','text')
-            ->add('dateGaranti','date',array('input'  => 'datetime',
+            ->add('dateGarantie','date',array('input'  => 'datetime',
                                            'widget' => 'single_text'))    
             ->add('ajouter', 'submit')
             ->getForm();
+        
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted())
+        {
+           
+            $data = $form->getData();
+             
+            $materiel = new Materiel();
+            
+            $materiel->setNomMat($data['nomMat']);
+            $materiel->setDateGarantie($data['dateGarantie']);
+            $materiel->setNumEtat($data['etatMat']);
+            $materiel->setNumSite($data['siteGeo']);
+            $materiel->setNumType($data['typeMat']);
+            $materiel->setNumStatut($data['statutMat']);
+            
+            $em = $this->getDoctrine()->getManager();
+            
+            $em->persist($materiel);
+            $em->flush();
+            
+            return new Response('<h1>Materiel ajouté !</h1>');
+        }
         
         /* 
         $form = $this->createForm(new testForm());

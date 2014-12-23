@@ -17,6 +17,7 @@ Donc on aura déjà un partie de vue créer ensuite on va remplir les bloc de ce
                     <h3 class="panel-title"><i class="fa fa-laptop"></i> Ajout d'un matériel</h3>
                 </div>
                 <div class="panel-body">
+                    {{ form_start(form) }}
                     <p class="col-lg-5"><b>Type de matériel :</b>
                         <br/>
                         {{ form_widget(form.typeMat, {'attr': {'class': 'form-control'}}) }}
@@ -106,7 +107,7 @@ Donc on aura déjà un partie de vue créer ensuite on va remplir les bloc de ce
                             <div class="contenu_onglet" id="contenu_onglet_5">
                                 <p class="col-lg-12"></p>
                                 <p class="col-lg-6"><b>Date de fin de garanti :</b> 
-                                    <input class="form-control" type="date" id="date"/>
+                                    {{ form_widget(form.dateGarantie, {'attr': {'class': 'form-control'}}) }}
                                 </p>    
                             </div>
                             {# 5eme onglet #}
@@ -123,6 +124,8 @@ Donc on aura déjà un partie de vue créer ensuite on va remplir les bloc de ce
                     <p class="col-lg-1">
                         {{ form_widget(form.ajouter,{'attr': {'class': 'btn btn-primary'}})}}
                     </p>
+                    
+                    {{ form_end(form) }}
                 </div>
             </div>
         </div>

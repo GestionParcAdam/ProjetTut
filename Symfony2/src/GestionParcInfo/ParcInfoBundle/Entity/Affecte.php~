@@ -22,11 +22,7 @@ class Affecte
      */
     private $id;
     
-    /**
-     * @ORM\ManyToOne(targetEntity="GestionParcInfo\ParcInfoBundle\Entity\Materiel", cascade={"persist","remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $numMat;
+    
     
     /**
      *
@@ -68,26 +64,4 @@ class Affecte
         return $this->numUser;
     }
 
-    /**
-     * Set numMat
-     *
-     * @param \GestionParcInfo\ParcInfoBundle\Entity\Materiel $numMat
-     * @return Affecte
-     */
-    public function setNumMat(\GestionParcInfo\ParcInfoBundle\Entity\Materiel $numMat)
-    {
-        $this->numMat = $numMat;
-
-        return $this;
-    }
-
-    /**
-     * Get numMat
-     *
-     * @return \GestionParcInfo\ParcInfoBundle\Entity\Materiel 
-     */
-    public function getNumMat()
-    {
-        return $this->numMat;
-    }
 }
