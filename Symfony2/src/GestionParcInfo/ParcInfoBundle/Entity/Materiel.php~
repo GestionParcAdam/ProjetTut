@@ -242,4 +242,27 @@ class Materiel
     {
         return $this->numCarac;
     }
+
+    /**
+     * Set numType
+     *
+     * @param \GestionParcInfo\ParcInfoBundle\Entity\Type $numType
+     * @return Materiel
+     */
+    public function setNumType(\GestionParcInfo\ParcInfoBundle\Entity\Type $numType = null)
+    {
+        $this->numType = $numType;
+
+        return $this;
+    }
+
+    /**
+     * Get numType
+     *
+     * @return \GestionParcInfo\ParcInfoBundle\Entity\Type 
+     */
+    public function getNumType()
+    {
+        return $this->numType;
+    }
 }

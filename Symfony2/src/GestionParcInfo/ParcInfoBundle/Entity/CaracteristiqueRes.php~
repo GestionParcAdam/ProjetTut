@@ -34,6 +34,13 @@ class CaracteristiqueRes
      * @ORM\Column(name="adressMac", type="string", length=40)
      */
     private $adressMac;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adressPasserelle", type="string", length=40)
+     */
+    private $adressPasserelle;
 
 
     /**

@@ -11,6 +11,8 @@
 namespace GestionParcInfo\ParcInfoBundle\Controller;
 
 use GestionParcInfo\ParcInfoBundle\Entity\Materiel;
+use GestionParcInfo\ParcInfoBundle\Entity\CaracteristiqueCom;
+use GestionParcInfo\ParcInfoBundle\Entity\CaracteristiqueRes;
 use GestionParcInfo\ParcInfoBundle\Entity\Site;
 use GestionParcInfo\ParcInfoBundle\Entity\Etat;
 use GestionParcInfo\ParcInfoBundle\Repository\MaterielRepository;
@@ -124,40 +126,33 @@ class DefaultController extends Controller
             $em->persist($materiel);
             $em->flush();
             
+            
+            $caracDeCom = new CaracteristiqueCom();
+            
+            $caracDeCom->setPrixAchat($data['prixAchat']);
+            $caracDeCom->setLibelleModele($data['modele']);
+            $caracDeCom->setDateAchat($data['dateAchat']);
+            
+            $em->persist($caracDeCom);
+            $em->flush();
+            
+            
+            $caracDeRes = new CaracteristiqueRes();
+            
+            $caracDeRes->setAdressIp($data['adIp']);
+            $caracDeRes->setAdressMac($data['adMac']);
+            $caracDeRes->setAdressPasserelle($data['adPasserelle']);
+            
+            $em->persist($caracDeRes);
+            $em->flush(); 
+            
             /* ca çà permet de retourner une réponse basique */
             return new Response('<h1>Materiel ajouté !</h1>');
         }
 
    
         return $this->render('ParcInfoBundle:Default:AjouterMateriel/ajouterMateriel.html.twig', array('form' => $form->createView()));
-    }
-    
-    public function fixtureAction()
-    {
-        /*
-        $site = new Site();
-        $site->setNomSite('Limoges');
-        $site->setAdresseSite('47 rue de la soif');
-        
-        $etat = new Etat();
-        $etat->setLibelleEtat('En service');
-        
-        
-        $materiel = new Materiel();
-        $materiel->setNomMat('PC-Fabien');
-        $materiel->setNumSite($site);
-        $materiel->setNumEtat($etat);
-        $date = new \DateTime();
-        $date->setDate(2014, 12, 09);
-        $materiel->setDateGarantie($date);
-        
-        $em = $this->getDoctrine()->getManager();
-        
-        $em->persist($materiel);
-        $em->flush();
-         */
-    }
-    
+    }  
     
     public function rechercherAction()
     {
@@ -183,7 +178,6 @@ class DefaultController extends Controller
         
         return $this->render('ParcInfoBundle:Default:RechercherMateriel/rechercherMateriel.html.twig', array('form' => $form->createView()));
     }
-    
     
     public function matHSAction()
     {

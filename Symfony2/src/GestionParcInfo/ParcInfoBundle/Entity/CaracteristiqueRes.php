@@ -34,6 +34,13 @@ class CaracteristiqueRes
      * @ORM\Column(name="adressMac", type="string", length=40)
      */
     private $adressMac;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adressPasserelle", type="string", length=40)
+     */
+    private $adressPasserelle;
 
 
     /**
@@ -90,5 +97,28 @@ class CaracteristiqueRes
     public function getAdressMac()
     {
         return $this->adressMac;
+    }
+
+    /**
+     * Set adressPasserelle
+     *
+     * @param string $adressPasserelle
+     * @return CaracteristiqueRes
+     */
+    public function setAdressPasserelle($adressPasserelle)
+    {
+        $this->adressPasserelle = $adressPasserelle;
+
+        return $this;
+    }
+
+    /**
+     * Get adressPasserelle
+     *
+     * @return string 
+     */
+    public function getAdressPasserelle()
+    {
+        return $this->adressPasserelle;
     }
 }
