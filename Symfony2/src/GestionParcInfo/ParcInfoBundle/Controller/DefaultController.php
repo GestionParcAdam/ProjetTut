@@ -104,9 +104,10 @@ class DefaultController extends Controller
         
         if($form->isSubmitted())
         {
-           
+           /* Ici je récupère les informations du formulaire dans un tableau /*/
             $data = $form->getData();
              
+            /* Je créer mon objet à persister dans la base */
             $materiel = new Materiel();
             
             $materiel->setNomMat($data['nomMat']);
@@ -116,56 +117,19 @@ class DefaultController extends Controller
             $materiel->setNumType($data['typeMat']);
             $materiel->setNumStatut($data['statutMat']);
             
+            /* j'ouvre la connexion à la BD Doctrine */
             $em = $this->getDoctrine()->getManager();
             
+            /* je dis que je persist l'objet et que j'upload direct en clair */
             $em->persist($materiel);
             $em->flush();
             
+            /* ca çà permet de retourner une réponse basique */
             return new Response('<h1>Materiel ajouté !</h1>');
         }
-        
-        /* 
-        $form = $this->createForm(new testForm());
-        
-        return $this->render('GestionParcInfo:ParcInfoBundle:Default:index.html.twig', array('form' => $form));
-        */
-        
-        /* Ici je créé un matériel
-         * Et lui affecte des données grace au getters/setters de l'entité matériel
-         */
-        
-        /*
-        $materiel = new Materiels();
-        $materiel->setMatNom('PC-Zizou');
-        $date = new \DateTime();
-        $date->setDate(2014, 12, 09);
-        $materiel->setDateGarantie($date);
-        $materiel->setNumAffecte(1);
-        $materiel->setNumCarac(1);
-        $materiel->setNumEtat(3);
-        $materiel->setNumHistorique(1);
-        $materiel->setNumSite(1);
-        $materiel->setNumType(1);
-        $materiel->setNumStatut(1);
-        */
-        /*
-        *  Ici j'initilise la connexion à la base de donnée en clair (em = entityManager)
-        */
-        
-        /*
-        $em = $this->getDoctrine()->getManager();
-        */
-        
-        /*
-         * Ici je demande de faire persister dans la base l'objet créer
-         * Persit + Flush
-         */
-        
-        /*
-            $em->persist($materiel);
-            $em->flush();
-        */
-            return $this->render('ParcInfoBundle:Default:AjouterMateriel/ajouterMateriel.html.twig', array('form' => $form->createView()));
+
+   
+        return $this->render('ParcInfoBundle:Default:AjouterMateriel/ajouterMateriel.html.twig', array('form' => $form->createView()));
     }
     
     public function fixtureAction()
@@ -194,6 +158,7 @@ class DefaultController extends Controller
          */
     }
     
+    
     public function rechercherAction()
     {
         $form = $this->createFormBuilder()
@@ -218,6 +183,7 @@ class DefaultController extends Controller
         
         return $this->render('ParcInfoBundle:Default:RechercherMateriel/rechercherMateriel.html.twig', array('form' => $form->createView()));
     }
+    
     
     public function matHSAction()
     {
