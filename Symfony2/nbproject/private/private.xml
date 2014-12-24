@@ -3,10 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/wamp/www/GestionParcAdam/ProjetTut/Symfony2/src/GestionParcInfo/ParcInfoBundle/Entity/CaracteristiqueRes.php</file>
+            <file>file:/C:/wamp/www/GestionParcAdam/ProjetTut/Symfony2/src/GestionParcInfo/ParcInfoBundle/Resources/config/routing.yml</file>
             <file>file:/C:/wamp/www/GestionParcAdam/ProjetTut/Symfony2/src/GestionParcInfo/ParcInfoBundle/Entity/Materiel.php</file>
             <file>file:/C:/wamp/www/GestionParcAdam/ProjetTut/Symfony2/src/GestionParcInfo/ParcInfoBundle/Controller/DefaultController.php</file>
             <file>file:/C:/wamp/www/GestionParcAdam/ProjetTut/Symfony2/src/GestionParcInfo/ParcInfoBundle/Resources/views/Default/AjouterMateriel/ajouterMateriel.html.twig</file>
-            <file>file:/C:/wamp/www/GestionParcAdam/ProjetTut/Symfony2/src/GestionParcInfo/ParcInfoBundle/Repository/MaterielRepository.php</file>
         </group>
     </open-files>
 </project-private>
