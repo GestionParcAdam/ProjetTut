@@ -86,8 +86,10 @@ class DefaultController extends Controller
             ->add('prixAchat','money'/*,array('currency' => 'false')*/)
             ->add('numFacture','text')
             ->add('modele','text')
-            ->add('fabricant','text')
-            ->add('revendeur','text')
+            ->add('fabricant','entity',array('class' => 'ParcInfoBundle:Fabricant', 
+                                             'property' => 'nomFabricant'))
+            ->add('revendeur','entity',array('class' => 'ParcInfoBundle:Revendeur', 
+                                             'property' => 'nomRevendeur'))
             ->add('immobilisation','text')
             ->add('editeur','text')
             ->add('nomLog','text')
@@ -130,6 +132,7 @@ class DefaultController extends Controller
             $caracDeCom->setPrixAchat($data['prixAchat']);
             $caracDeCom->setLibelleModele($data['modele']);
             $caracDeCom->setDateAchat($data['dateAchat']);
+            $caracDeCom->setNumImmo($date('immobilisation'));
             
             $em->persist($caracDeCom);
             $em->flush();
