@@ -14,5 +14,7 @@ parc_info_rechercher:
 parc_info_matHS:
     path:     /matHS
     defaults: { _controller: ParcInfoBundle:Default:matHS }
-
-
+    
+parc_info_edition:
+    path:     /edition
+    defaults: { _controller: ParcInfoBundle:Default:edition }
