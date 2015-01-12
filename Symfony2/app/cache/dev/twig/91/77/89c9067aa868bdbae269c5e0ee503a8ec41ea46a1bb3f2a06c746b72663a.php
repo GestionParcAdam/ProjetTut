@@ -83,209 +83,131 @@ class __TwigTemplate_917789c9067aa868bdbae269c5e0ee503a8ec41ea46a1bb3f2a06c746b7
                 <h3 class=\"panel-title\"><i class=\"glyphicon glyphicon-th-list\"></i> Etat du parc</h3>
             </div>
             <div class=\"panel-body\">
-                <div class=\"col-lg-6\">
-                    <div class=\"panel panel-info\">
-                        <div class=\"panel-heading\">
-                            <h3 class=\"panel-title\"><i class=\"fa fa-laptop\"></i> Ordinateur</h3>
+                                  
+                
+               ";
+        // line 47
+        if (((isset($context["allsite"]) ? $context["allsite"] : $this->getContext($context, "allsite")) != null)) {
+            // line 48
+            echo "                 ";
+            $context["nbMatHS"] = 0;
+            // line 49
+            echo "
+                    ";
+            // line 50
+            $context['_parent'] = (array) $context;
+            $context['_seq'] = twig_ensure_traversable((isset($context["allsite"]) ? $context["allsite"] : $this->getContext($context, "allsite")));
+            foreach ($context['_seq'] as $context["_key"] => $context["site"]) {
+                // line 51
+                echo "                        ";
+                $context["nbMatService"] = 0;
+                // line 52
+                echo "                        ";
+                $context["nbMatPan"] = 0;
+                // line 53
+                echo "                        ";
+                $context["nbMatHs"] = 0;
+                // line 54
+                echo "                        ";
+                $context['_parent'] = (array) $context;
+                $context['_seq'] = twig_ensure_traversable($this->getAttribute($context["site"], "materiels", array()));
+                foreach ($context['_seq'] as $context["_key"] => $context["materiel"]) {
+                    // line 55
+                    echo "                            ";
+                    if (($this->getAttribute($this->getAttribute($context["materiel"], "numEtat", array()), "id", array()) == 1)) {
+                        // line 56
+                        echo "                                ";
+                        $context["nbMatService"] = ((isset($context["nbMatService"]) ? $context["nbMatService"] : $this->getContext($context, "nbMatService")) + 1);
+                        // line 57
+                        echo "                            ";
+                    }
+                    // line 58
+                    echo "                            ";
+                    if (($this->getAttribute($this->getAttribute($context["materiel"], "numEtat", array()), "id", array()) == 2)) {
+                        // line 59
+                        echo "                                ";
+                        $context["nbMatHs"] = ((isset($context["nbMatHs"]) ? $context["nbMatHs"] : $this->getContext($context, "nbMatHs")) + 1);
+                        // line 60
+                        echo "                            ";
+                    }
+                    // line 61
+                    echo "                            ";
+                    if (($this->getAttribute($this->getAttribute($context["materiel"], "numEtat", array()), "id", array()) == 3)) {
+                        // line 62
+                        echo "                                ";
+                        $context["nbMatPan"] = ((isset($context["nbMatPan"]) ? $context["nbMatPan"] : $this->getContext($context, "nbMatPan")) + 1);
+                        // line 63
+                        echo "                            ";
+                    }
+                    // line 64
+                    echo "                        ";
+                }
+                $_parent = $context['_parent'];
+                unset($context['_seq'], $context['_iterated'], $context['_key'], $context['materiel'], $context['_parent'], $context['loop']);
+                $context = array_intersect_key($context, $_parent) + $_parent;
+                // line 65
+                echo "                        <div class=\"col-lg-6\">
+                            <div class=\"panel panel-info\">
+                                <div class=\"panel-heading\">
+                                    <h3 class=\"panel-title\"><i class=\"fa fa-laptop\"></i> ";
+                // line 68
+                echo twig_escape_filter($this->env, $this->getAttribute($context["site"], "nomSite", array()), "html", null, true);
+                echo " </h3>
+                                </div>
+                                <table class=\"table table-striped\">
+                                    <thead>
+                                        <tr>
+                                            <th>Etat</th>
+                                            <th>Nombre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr onclick=\"document.location.href='";
+                // line 78
+                echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("parc_info_etat", array("idEtat" => 1, "numSite" => $this->getAttribute($context["site"], "id", array()))), "html", null, true);
+                echo "'\" class=\"cellule\">
+                                            <td>En Service</td>
+                                            <td>";
+                // line 80
+                echo twig_escape_filter($this->env, (isset($context["nbMatService"]) ? $context["nbMatService"] : $this->getContext($context, "nbMatService")), "html", null, true);
+                echo "</td>
+                                        </tr>
+                                        <tr onclick=\"document.location.href='";
+                // line 82
+                echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("parc_info_etat", array("idEtat" => 3, "numSite" => $this->getAttribute($context["site"], "id", array()))), "html", null, true);
+                echo "'\" class=\"cellule\">
+                                            <td>En panne</td>
+                                            <td>";
+                // line 84
+                echo twig_escape_filter($this->env, (isset($context["nbMatPan"]) ? $context["nbMatPan"] : $this->getContext($context, "nbMatPan")), "html", null, true);
+                echo "</td>
+                                        </tr>
+                                        <tr onclick=\"document.location.href='";
+                // line 86
+                echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("parc_info_etat", array("idEtat" => 2, "numSite" => $this->getAttribute($context["site"], "id", array()))), "html", null, true);
+                echo "'\" class=\"cellule\">
+                                            <td>HS</td>
+                                            <td>";
+                // line 88
+                echo twig_escape_filter($this->env, (isset($context["nbMatHs"]) ? $context["nbMatHs"] : $this->getContext($context, "nbMatHs")), "html", null, true);
+                echo "</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <table class=\"table table-striped\">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>28</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr onclick=\"document.location.href='MatHS/ordiHS.html'\" class=\"cellule\">
-                                    <td>HS</td>
-                                    <td>2</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class=\"col-lg-6\">
-                    <div class=\"panel panel-info\">
-                        <div class=\"panel-heading\">
-                            <h3 class=\"panel-title\"><i class=\"glyphicon glyphicon-print\"></i> Imprimante</h3>
-                        </div>
-                        <table class=\"table table-striped\">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>12</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr onclick=\"document.location.href='MatHS/printHS.html'\" class=\"cellule\">
-                                    <td>HS</td>
-                                    <td>2</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class=\"col-lg-6\">
-                    <div class=\"panel panel-info\">
-                        <div class=\"panel-heading\">
-                            <h3 class=\"panel-title\"><i class=\"fa fa-tablet\"></i> Smartphone</h3>
-                        </div>
-                        <table class=\"table table-striped\">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>6</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>HS</td>
-                                    <td>0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class=\"col-lg-6\">
-                    <div class=\"panel panel-info\">
-                        <div class=\"panel-heading\">
-                            <h3 class=\"panel-title\"><i class=\"fa fa-files-o\"></i> Copieur</h3>
-                        </div>
-                        <table class=\"table table-striped\">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>5</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td>HS</td>
-                                    <td>0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class=\"col-lg-6\">
-                    <div class=\"panel panel-info\">
-                        <div class=\"panel-heading\">
-                            <h3 class=\"panel-title\"><i class=\"glyphicon glyphicon-signal\"></i> Clé 3G</h3>
-                        </div>
-                        <table class=\"table table-striped\">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>12</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td>HS</td>
-                                    <td>0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class=\"col-lg-6\">
-                    <div class=\"panel panel-info\">
-                        <div class=\"panel-heading\">
-                            <h3 class=\"panel-title\"><i class=\"fa fa-exchange\"></i> Switch</h3>
-                        </div>
-                        <table class=\"table table-striped\">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>24</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>HS</td>
-                                    <td>0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class=\"col-lg-6\">
-                    <div class=\"panel panel-info\">
-                        <div class=\"panel-heading\">
-                            <h3 class=\"panel-title\"><i class=\"glyphicon glyphicon-hdd\"></i> Routeur </h3>
-                        </div>
-                        <table class=\"table table-striped\">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr onclick=\"document.location.href='MatHS/routeurHS.html'\" class=\"cellule\">
-                                    <td>HS</td>
-                                    <td>1</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    ";
+            }
+            $_parent = $context['_parent'];
+            unset($context['_seq'], $context['_iterated'], $context['_key'], $context['site'], $context['_parent'], $context['loop']);
+            $context = array_intersect_key($context, $_parent) + $_parent;
+            // line 95
+            echo "                
+                ";
+        }
+        // line 97
+        echo "                
+                
             </div>
         </div>
     </div>
@@ -346,6 +268,6 @@ class __TwigTemplate_917789c9067aa868bdbae269c5e0ee503a8ec41ea46a1bb3f2a06c746b7
 
     public function getDebugInfo()
     {
-        return array (  75 => 34,  69 => 31,  65 => 30,  60 => 27,  54 => 26,  51 => 25,  47 => 24,  44 => 23,  41 => 22,  39 => 19,  36 => 18,  28 => 11,);
+        return array (  209 => 97,  205 => 95,  192 => 88,  187 => 86,  182 => 84,  177 => 82,  172 => 80,  167 => 78,  154 => 68,  149 => 65,  143 => 64,  140 => 63,  137 => 62,  134 => 61,  131 => 60,  128 => 59,  125 => 58,  122 => 57,  119 => 56,  116 => 55,  111 => 54,  108 => 53,  105 => 52,  102 => 51,  98 => 50,  95 => 49,  92 => 48,  90 => 47,  75 => 34,  69 => 31,  65 => 30,  60 => 27,  54 => 26,  51 => 25,  47 => 24,  44 => 23,  41 => 22,  39 => 19,  36 => 18,  28 => 11,);
     }
 }

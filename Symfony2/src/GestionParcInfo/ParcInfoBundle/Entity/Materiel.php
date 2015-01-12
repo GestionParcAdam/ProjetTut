@@ -35,9 +35,9 @@ class Materiel
      */
     private $dateGarantie;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="GestionParcInfo\ParcInfoBundle\Entity\Site", cascade={"persist","remove"})
-     * @ORM\JoinColumn(nullable=false)
+    /** 
+     * @ORM\ManyToOne(targetEntity="GestionParcInfo\ParcInfoBundle\Entity\Site", inversedBy="materiels", cascade={"persist","remove"})
+     * @ORM\JoinColumn(nullable=false, referencedColumnName="id")
      */
     private $numSite;
     

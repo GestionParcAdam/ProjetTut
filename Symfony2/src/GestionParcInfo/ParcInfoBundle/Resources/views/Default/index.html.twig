@@ -42,209 +42,60 @@ Donc on aura déjà un partie de vue créer ensuite on va remplir les bloc de ce
                 <h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> Etat du parc</h3>
             </div>
             <div class="panel-body">
-                <div class="col-lg-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-laptop"></i> Ordinateur</h3>
+                                  
+                
+               {% if allsite != null %}
+                 {% set nbMatHS = 0 %}
+
+                    {% for site in allsite %}
+                        {% set nbMatService = 0 %}
+                        {% set nbMatPan = 0 %}
+                        {% set nbMatHs = 0 %}
+                        {% for materiel in site.materiels %}
+                            {% if materiel.numEtat.id==1 %}
+                                {% set nbMatService = nbMatService + 1 %}
+                            {% endif %}
+                            {% if materiel.numEtat.id==2 %}
+                                {% set nbMatHs = nbMatHs + 1 %}
+                            {% endif %}
+                            {% if materiel.numEtat.id==3 %}
+                                {% set nbMatPan = nbMatPan + 1 %}
+                            {% endif %}
+                        {% endfor%}
+                        <div class="col-lg-6">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"><i class="fa fa-laptop"></i> {{site.nomSite}} </h3>
+                                </div>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Etat</th>
+                                            <th>Nombre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr onclick="document.location.href='{{ path('parc_info_etat', { 'idEtat': 1,'numSite':site.id }) }}'" class="cellule">
+                                            <td>En Service</td>
+                                            <td>{{nbMatService}}</td>
+                                        </tr>
+                                        <tr onclick="document.location.href='{{ path('parc_info_etat', { 'idEtat': 3,'numSite':site.id }) }}'" class="cellule">
+                                            <td>En panne</td>
+                                            <td>{{nbMatPan}}</td>
+                                        </tr>
+                                        <tr onclick="document.location.href='{{ path('parc_info_etat', { 'idEtat': 2,'numSite':site.id }) }}'" class="cellule">
+                                            <td>HS</td>
+                                            <td>{{nbMatHs}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>28</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr onclick="document.location.href='MatHS/ordiHS.html'" class="cellule">
-                                    <td>HS</td>
-                                    <td>2</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="glyphicon glyphicon-print"></i> Imprimante</h3>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>12</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>2</td>
-                                </tr>
-                                <tr onclick="document.location.href='MatHS/printHS.html'" class="cellule">
-                                    <td>HS</td>
-                                    <td>2</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-tablet"></i> Smartphone</h3>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>6</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>HS</td>
-                                    <td>0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-files-o"></i> Copieur</h3>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>5</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td>HS</td>
-                                    <td>0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="glyphicon glyphicon-signal"></i> Clé 3G</h3>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>12</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td>HS</td>
-                                    <td>0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-exchange"></i> Switch</h3>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>24</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>1</td>
-                                </tr>
-                                <tr>
-                                    <td>HS</td>
-                                    <td>0</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="glyphicon glyphicon-hdd"></i> Routeur </h3>
-                        </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Etat</th>
-                                    <th>Nombre</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>En Service</td>
-                                    <td>10</td>
-                                </tr>
-                                <tr>
-                                    <td>En panne</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr onclick="document.location.href='MatHS/routeurHS.html'" class="cellule">
-                                    <td>HS</td>
-                                    <td>1</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    {% endfor %}
+                
+                {%endif%}
+                
+                
             </div>
         </div>
     </div>

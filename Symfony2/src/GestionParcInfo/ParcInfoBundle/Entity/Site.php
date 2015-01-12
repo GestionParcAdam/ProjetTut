@@ -36,6 +36,12 @@ class Site
     private $adresseSite;
 
     /**
+     *
+     * @ORM\OneToMany(targetEntity="GestionParcInfo\ParcInfoBundle\Entity\Materiel", mappedBy="numSite", cascade={"remove","persist"})
+     */
+    protected $materiels;
+    
+    /**
      * Get id
      *
      * @return integer 
@@ -89,5 +95,45 @@ class Site
     public function getAdresseSite()
     {
         return $this->adresseSite;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->materiels = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add materiels
+     *
+     * @param \GestionParcInfo\ParcInfoBundle\Entity\Materiel $materiels
+     * @return Site
+     */
+    public function addMateriel(\GestionParcInfo\ParcInfoBundle\Entity\Materiel $materiels)
+    {
+        $this->materiels[] = $materiels;
+    
+        return $this;
+    }
+
+    /**
+     * Remove materiels
+     *
+     * @param \GestionParcInfo\ParcInfoBundle\Entity\Materiel $materiels
+     */
+    public function removeMateriel(\GestionParcInfo\ParcInfoBundle\Entity\Materiel $materiels)
+    {
+        $this->materiels->removeElement($materiels);
+    }
+
+    /**
+     * Get materiels
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMateriels()
+    {
+        return $this->materiels;
     }
 }

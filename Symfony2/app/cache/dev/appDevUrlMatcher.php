@@ -146,9 +146,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array (  '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::matHSAction',  '_route' => 'parc_info_matHS',);
         }
 
-        // parc_info_edition
-        if ($pathinfo === '/edition') {
-            return array (  '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::editionAction',  '_route' => 'parc_info_edition',);
+        if (0 === strpos($pathinfo, '/e')) {
+            // parc_info_edition
+            if ($pathinfo === '/edition') {
+                return array (  '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::editionAction',  '_route' => 'parc_info_edition',);
+            }
+
+            // parc_info_etat
+            if (0 === strpos($pathinfo, '/etat') && preg_match('#^/etat/(?P<numSite>[^/]++)/(?P<idEtat>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'parc_info_etat')), array (  '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::etatAction',));
+            }
+
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

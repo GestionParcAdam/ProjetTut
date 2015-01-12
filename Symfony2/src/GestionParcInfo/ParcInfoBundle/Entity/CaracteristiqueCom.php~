@@ -41,6 +41,13 @@ class CaracteristiqueCom
      * @ORM\Column(name="libelleModele", type="string", length=255)
      */
     private $libelleModele;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numImmo", type="string", length=255)
+     */
+    private $numImmo;
 
 
     /**
@@ -120,5 +127,28 @@ class CaracteristiqueCom
     public function getLibelleModele()
     {
         return $this->libelleModele;
+    }
+    
+    /**
+     * Set numImmo
+     *
+     * @param string $numImmo
+     * @return CaracteristiqueCom
+     */
+    public function setNumImmo($numImmo)
+    {
+        $this->numImmo = $numImmo;
+
+        return $this;
+    }
+
+    /**
+     * Get numImmo
+     *
+     * @return string 
+     */
+    public function getNumImmo()
+    {
+        return $this->numImmo;
     }
 }

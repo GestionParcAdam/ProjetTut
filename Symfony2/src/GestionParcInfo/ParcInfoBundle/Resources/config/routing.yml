@@ -18,3 +18,9 @@ parc_info_matHS:
 parc_info_edition:
     path:     /edition
     defaults: { _controller: ParcInfoBundle:Default:edition }
+    
+parc_info_etat:
+    path:     /etat/{numSite}/{idEtat}
+    defaults: { _controller: ParcInfoBundle:Default:etat }
+    
+    

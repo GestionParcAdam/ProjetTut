@@ -98,4 +98,27 @@ class CaracteristiqueRes
     {
         return $this->adressMac;
     }
+
+    /**
+     * Set adressPasserelle
+     *
+     * @param string $adressPasserelle
+     * @return CaracteristiqueRes
+     */
+    public function setAdressPasserelle($adressPasserelle)
+    {
+        $this->adressPasserelle = $adressPasserelle;
+
+        return $this;
+    }
+
+    /**
+     * Get adressPasserelle
+     *
+     * @return string 
+     */
+    public function getAdressPasserelle()
+    {
+        return $this->adressPasserelle;
+    }
 }

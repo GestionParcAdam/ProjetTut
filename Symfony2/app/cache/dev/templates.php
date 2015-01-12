@@ -79,6 +79,7 @@
   'DoctrineBundle:Collector:explain.html.twig' => 'C:\\wamp\\www\\ProjetTut\\Symfony2\\vendor\\doctrine\\doctrine-bundle/Resources/views/Collector/explain.html.twig',
   'ParcInfoBundle:Default/AjouterMateriel:ajouterMateriel.html.twig' => 'C:\\wamp\\www\\ProjetTut\\Symfony2\\src\\GestionParcInfo\\ParcInfoBundle/Resources/views/Default/AjouterMateriel/ajouterMateriel.html.twig',
   'ParcInfoBundle:Default/EditionRapport:EditionRapport.html.twig' => 'C:\\wamp\\www\\ProjetTut\\Symfony2\\src\\GestionParcInfo\\ParcInfoBundle/Resources/views/Default/EditionRapport/EditionRapport.html.twig',
+  'ParcInfoBundle:Default/Etat:affichageMaterielByEtat.html.twig' => 'C:\\wamp\\www\\ProjetTut\\Symfony2\\src\\GestionParcInfo\\ParcInfoBundle/Resources/views/Default/Etat/affichageMaterielByEtat.html.twig',
   'ParcInfoBundle:Default:index.html.twig' => 'C:\\wamp\\www\\ProjetTut\\Symfony2\\src\\GestionParcInfo\\ParcInfoBundle/Resources/views/Default/index.html.twig',
   'ParcInfoBundle:Default/PopUp:affichePopUp.html.twig' => 'C:\\wamp\\www\\ProjetTut\\Symfony2\\src\\GestionParcInfo\\ParcInfoBundle/Resources/views/Default/PopUp/affichePopUp.html.twig',
   'ParcInfoBundle:Default/RechercherMateriel:rechercherMateriel.html.twig' => 'C:\\wamp\\www\\ProjetTut\\Symfony2\\src\\GestionParcInfo\\ParcInfoBundle/Resources/views/Default/RechercherMateriel/rechercherMateriel.html.twig',

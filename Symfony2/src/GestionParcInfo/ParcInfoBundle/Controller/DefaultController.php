@@ -36,26 +36,10 @@ class DefaultController extends Controller
          */
         $materiels = $em->getRepository('ParcInfoBundle:Materiel')   
                        ->getMaterielsHS();
-        
-        
-        /* Un if normal qui verrifie le contenu de la requete */
-        if($materiels!=null)
-        {
-            /*
-             * Ici je retourne un render (une vue)
-             * Je dis que je vais utiliser la vu du bundle ParcInfoBundle se trouvant dans le dossier default 
-             * Et pour nom de vue index.html.twig
-             * Ensuite j'envoie à cette vue un tableau 
-             * Qui contient l'objet de ma requete (ici une sorte de tableau)
-             */
-            return $this->render('ParcInfoBundle:Default:index.html.twig', array('materiels' => $materiels));
-        }
-        else {
-            /*
-             * Idem qu'au dessus sauf que la je renvoie un objet null qui permet de gérer ma vue twig
-             */
-            return $this->render('ParcInfoBundle:Default:index.html.twig', array('materiels' => null));
-        }
+        $allsite = $em->getRepository('ParcInfoBundle:Site')->findAll();
+       
+        return $this->render('ParcInfoBundle:Default:index.html.twig', 
+                                array('materiels' => $materiels,'allsite' => $allsite));
     }
     
     public function ajouterAction(Request $request)
@@ -203,5 +187,18 @@ class DefaultController extends Controller
             
        return $this->render('ParcInfoBundle:Default:EditionRapport/EditionRapport.html.twig', array('form' => $form->createView()));
        
+    }
+    public function etatAction($numSite,$idEtat)
+    {
+        
+            
+      $em = $this->getDoctrine()->getManager();
+       
+        $mats = $em->getRepository('ParcInfoBundle:Materiel')
+                ->findBy(array('numSite'=>$numSite,'numEtat'=>$idEtat));
+        $etat = $em->getRepository('ParcInfoBundle:Etat')->find($idEtat)->getLibelleEtat();
+       
+        return $this->render('ParcInfoBundle:Default:Etat/affichageMaterielByEtat.html.twig', 
+                                array('materiels' => $mats,'etat'=>$etat));
     }
 }

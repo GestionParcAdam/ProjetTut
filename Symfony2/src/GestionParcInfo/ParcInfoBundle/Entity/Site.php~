@@ -36,6 +36,12 @@ class Site
     private $adresseSite;
 
     /**
+     *
+     * @ORM\OneToMany(targetEntity="GestionParcInfo\ParcInfoBundle\Entity\Materiel", mappedBy="numSite", cascade={"remove","persist"})
+     */
+    protected $materiels;
+    
+    /**
      * Get id
      *
      * @return integer 
