@@ -1,6 +1,6 @@
 <?php
 
-/* ParcInfoBundle:Default:AjouterMateriel/ajouterMateriel.html.twig */
+/* ParcInfoBundle:Default/AjouterMateriel:ajouterMateriel.html.twig */
 class __TwigTemplate_5fd9d145908cf3cdbac6fec53c8abf087a0bcfd34fdba7b99eb6c523c8f03988 extends Twig_Template
 {
     public function __construct(Twig_Environment $env)
@@ -356,7 +356,7 @@ class __TwigTemplate_5fd9d145908cf3cdbac6fec53c8abf087a0bcfd34fdba7b99eb6c523c8f
 
     public function getTemplateName()
     {
-        return "ParcInfoBundle:Default:AjouterMateriel/ajouterMateriel.html.twig";
+        return "ParcInfoBundle:Default/AjouterMateriel:ajouterMateriel.html.twig";
     }
 
     public function isTraitable()
