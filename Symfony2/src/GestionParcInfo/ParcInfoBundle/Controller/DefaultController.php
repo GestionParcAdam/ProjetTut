@@ -132,7 +132,7 @@ class DefaultController extends Controller
             $caracDeCom->setPrixAchat($data['prixAchat']);
             $caracDeCom->setLibelleModele($data['modele']);
             $caracDeCom->setDateAchat($data['dateAchat']);
-            $caracDeCom->setNumImmo($date('immobilisation'));
+            $caracDeCom->setNumImmo($data('immobilisation'));
             
             $em->persist($caracDeCom);
             $em->flush();
