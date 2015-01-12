@@ -146,6 +146,11 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array (  '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::matHSAction',  '_route' => 'parc_info_matHS',);
         }
 
+        // parc_info_edition
+        if ($pathinfo === '/edition') {
+            return array (  '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::editionAction',  '_route' => 'parc_info_edition',);
+        }
+
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();
     }
 }

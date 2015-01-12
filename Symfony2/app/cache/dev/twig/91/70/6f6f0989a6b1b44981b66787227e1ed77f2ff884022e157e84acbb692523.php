@@ -83,7 +83,10 @@ class __TwigTemplate_91706f6f0989a6b1b44981b66787227e1ed77f2ff884022e157e84acbb6
         // line 38
         echo $this->env->getExtension('routing')->getPath("parc_info_rechercher");
         echo "\"><i class=\"glyphicon glyphicon-search\"></i>  Recherche multicritère </a></li>
-                    <li><a href=\"EditerRapport.html\"><i class=\"glyphicon glyphicon-print\"></i> Edition de rapport </a></li>
+                    <li><a href=\"";
+        // line 39
+        echo $this->env->getExtension('routing')->getPath("parc_info_edition");
+        echo "\"><i class=\"glyphicon glyphicon-print\"></i> Edition de rapport </a></li>
                 </ul>
 
                 <ul class=\"nav navbar-nav navbar-right navbar-user\">
@@ -133,6 +136,6 @@ class __TwigTemplate_91706f6f0989a6b1b44981b66787227e1ed77f2ff884022e157e84acbb6
 
     public function getDebugInfo()
     {
-        return array (  120 => 54,  115 => 53,  107 => 55,  104 => 54,  102 => 53,  84 => 38,  80 => 37,  72 => 32,  53 => 16,  49 => 15,  45 => 14,  40 => 12,  36 => 11,  32 => 10,  21 => 1,);
+        return array (  123 => 54,  118 => 53,  110 => 55,  107 => 54,  105 => 53,  88 => 39,  84 => 38,  80 => 37,  72 => 32,  53 => 16,  49 => 15,  45 => 14,  40 => 12,  36 => 11,  32 => 10,  21 => 1,);
     }
 }
