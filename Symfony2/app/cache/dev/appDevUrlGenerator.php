@@ -32,7 +32,6 @@ class appDevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
         'parc_info_ajouter' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::ajouterAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/ajouter',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
         'parc_info_rechercher' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::rechercherAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/search',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
         'parc_info_matHS' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::matHSAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/matHS',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
-        'parc_info_ficture' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'GestionParcInfo\\ParcInfoBundle\\Controller\\DefaultController::fixtureAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/fixture',    ),  ),  4 =>   array (  ),  5 =>   array (  ),),
     );
 
     /**

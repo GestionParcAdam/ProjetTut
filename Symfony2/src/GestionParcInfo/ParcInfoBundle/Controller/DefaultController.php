@@ -86,11 +86,12 @@ class DefaultController extends Controller
                                              'property' => 'nomSite'))
             ->add('dateAchat','date',array('input'  => 'datetime',
                                            'widget' => 'single_text'))
-            ->add('prixAchat','money',array('currency' => 'false'))
+            ->add('prixAchat','money'/*,array('currency' => 'false')*/)
             ->add('numFacture','text')
             ->add('modele','text')
             ->add('fabricant','text')
             ->add('revendeur','text')
+            ->add('immobilisation','text')
             ->add('editeur','text')
             ->add('nomLog','text')
             ->add('licence','text')
@@ -168,7 +169,6 @@ class DefaultController extends Controller
                                              'property' => 'nomSite'))
             ->add('dateAchat','date',array('input'  => 'datetime',
                                            'widget' => 'single_text'))
-            ->add('prixAchat','money',array('currency' => 'false'))
             ->add('numFacture','text')
             ->add('modele','text')
             ->add('fabricant','text')
