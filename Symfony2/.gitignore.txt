@@ -1,6 +1,0 @@
-/web/bundless
-/app/bootsrap*
-/app/cache/*
-/app/logs/*
-/vendor/
-/app/config/parameters.yml
