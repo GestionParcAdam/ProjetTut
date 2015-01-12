@@ -189,7 +189,13 @@ class DefaultController extends Controller
     }
     public function editionAction()
     {
-       return $this->render('ParcInfoBundle:Default:EditionRapport/EditionRapport.html.twig');
+        $form = $this->createFormBuilder()
+            ->add('siteGeo', 'entity', array('class' => 'ParcInfoBundle:Site', 
+                                             'property' => 'nomSite'))  
+            ->add('etatMat', 'entity',array('class' => 'ParcInfoBundle:Etat', 
+                                             'property' => 'libelleEtat'))
+            ->getForm();
+       return $this->render('ParcInfoBundle:Default:EditionRapport/EditionRapport.html.twig', array('form' => $form->createView()));
        
     }
 }
